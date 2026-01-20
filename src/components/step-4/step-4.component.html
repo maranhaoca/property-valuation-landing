@@ -1,0 +1,87 @@
+
+<div class="bg-white p-8 rounded-lg shadow-md animate-fade-in">
+  @if (!isSubmitted()) {
+    <h2 class="text-2xl font-light text-gray-800 mb-2">Confirme os seus dados</h2>
+    <p class="text-gray-600 mb-6">Por favor, reveja as informações do seu imóvel antes de submeter.</p>
+
+    <div class="border-t border-b border-gray-200 divide-y divide-gray-200">
+      @if (valuationData().location) {
+        <div class="py-3 flex justify-between text-sm">
+          <span class="font-medium text-gray-600">Localização</span>
+          <span class="text-gray-800">{{ valuationData().location }}, {{ valuationData().doorNumber }}</span>
+        </div>
+      }
+      @if (valuationData().propertyType) {
+        <div class="py-3 flex justify-between text-sm">
+          <span class="font-medium text-gray-600">Tipo de Imóvel</span>
+          <span class="text-gray-800">{{ valuationData().propertyType }} para {{ valuationData().purpose }}</span>
+        </div>
+      }
+      @if (valuationData().usefulArea) {
+        <div class="py-3 flex justify-between text-sm">
+          <span class="font-medium text-gray-600">Área Útil / Bruta</span>
+          <span class="text-gray-800">{{ valuationData().usefulArea }}m² / {{ valuationData().grossArea }}m²</span>
+        </div>
+      }
+       @if (valuationData().bedrooms) {
+        <div class="py-3 flex justify-between text-sm">
+          <span class="font-medium text-gray-600">Quartos / Casas de Banho</span>
+          <span class="text-gray-800">{{ valuationData().bedrooms }} / {{ valuationData().bathrooms }}</span>
+        </div>
+      }
+       @if (valuationData().name) {
+        <div class="py-3 flex justify-between text-sm">
+          <span class="font-medium text-gray-600">Contato</span>
+          <span class="text-gray-800">{{ valuationData().name }} ({{ valuationData().email }})</span>
+        </div>
+      }
+    </div>
+
+    <!-- AI Summary Section -->
+    <div class="mt-6">
+      <button (click)="generateSummary()" [disabled]="isLoadingSummary()" class="w-full bg-blue-600 text-white font-bold py-3 px-6 rounded-md hover:bg-blue-700 transition-colors duration-300 flex items-center justify-center disabled:opacity-50 disabled:cursor-not-allowed">
+        @if (isLoadingSummary()) {
+          <svg class="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+          </svg>
+          A gerar sumário...
+        } @else {
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
+            <path d="M5 4a2 2 0 012-2h6a2 2 0 012 2v1h-2V4H7v1H5V4zM5 7h10v9a2 2 0 01-2 2H7a2 2 0 01-2-2V7zm5 1a1 1 0 00-1 1v4a1 1 0 002 0V9a1 1 0 00-1-1z" />
+          </svg>
+          Gerar Sumário com IA
+        }
+      </button>
+
+      @if (aiSummary()) {
+        <div class="mt-4 p-4 bg-gray-50 rounded-md border border-gray-200">
+          <h4 class="font-semibold text-gray-800">Sugestão de Descrição:</h4>
+          <p class="mt-2 text-sm text-gray-600 whitespace-pre-wrap">{{ aiSummary() }}</p>
+        </div>
+      }
+      @if (error()) {
+         <p class="mt-2 text-sm text-red-600 text-center">{{ error() }}</p>
+      }
+    </div>
+
+    <div class="mt-8 text-center">
+      <button (click)="submitRequest()" class="bg-era-red text-white font-bold py-3 px-12 rounded-md hover:bg-red-700 transition-colors duration-300">
+        Confirmar e Pedir Avaliação
+      </button>
+    </div>
+  } @else {
+    <div class="text-center py-12">
+      <svg class="mx-auto h-16 w-16 text-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+      </svg>
+      <h2 class="mt-4 text-2xl font-light text-gray-800">Pedido Enviado com Sucesso!</h2>
+      <p class="mt-2 text-gray-600">Obrigado pelo seu interesse. Um dos nossos agentes entrará em contato consigo em breve com a sua avaliação.</p>
+      <div class="mt-8">
+        <button (click)="restart.emit()" class="text-era-red font-bold py-2 px-6 rounded-md border border-era-red hover:bg-red-50 transition-colors duration-300">
+          Fazer Nova Avaliação
+        </button>
+      </div>
+    </div>
+  }
+</div>

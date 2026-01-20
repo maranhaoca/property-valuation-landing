@@ -1,0 +1,5 @@
+{
+  "name": "Avaliação de Imóvel",
+  "description": "Uma aplicação para agentes imobiliários fornecerem avaliações de imóveis aos usuários em troca de dados de contato. Inspirado na interface da ERA Real Estate.",
+  "requestFramePermissions": []
+}

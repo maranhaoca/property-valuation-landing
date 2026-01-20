@@ -1,0 +1,33 @@
+
+<div class="flex items-center justify-between">
+  @for (step of steps; track step.id; let i = $index) {
+    <div class="flex items-center w-full">
+      <div class="flex flex-col items-center text-center">
+        <div 
+          class="w-10 h-10 rounded-full flex items-center justify-center transition-all duration-300"
+          [class.bg-era-red]="currentStep() >= step.id"
+          [class.text-white]="currentStep() >= step.id"
+          [class.border-2]="currentStep() < step.id"
+          [class.border-era-red]="currentStep() === step.id"
+          [class.border-era-gray-medium]="currentStep() < step.id"
+          [class.text-era-red]="currentStep() === step.id"
+          [class.text-era-gray-dark]="currentStep() < step.id">
+          {{ step.id }}
+        </div>
+        <p 
+          class="mt-2 text-xs sm:text-sm font-medium transition-colors duration-300"
+          [class.text-era-red]="currentStep() >= step.id"
+          [class.text-era-gray-dark]="currentStep() < step.id">
+          {{ step.label }}
+        </p>
+      </div>
+
+      @if (!$last) {
+        <div class="flex-auto border-t-2 transition-colors duration-300"
+             [class.border-era-red]="currentStep() > step.id"
+             [class.border-era-gray-medium]="currentStep() <= step.id">
+        </div>
+      }
+    </div>
+  }
+</div>
