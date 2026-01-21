@@ -5,7 +5,7 @@ import { PropertyValuation } from '../models/property-valuation.model';
 import {environment} from "../environments/environment";
 
 @Injectable({ providedIn: 'root' })
-export class GeminiService {
+export class ValuationService {
   private baseUrl = environment.apiUrl;
 
   constructor(private http: HttpClient) {}

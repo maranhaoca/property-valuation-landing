@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, inject, input, output, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { PropertyValuation } from '../../models/property-valuation.model';
-import { GeminiService } from '../../services/gemini.service';
+import { ValuationService } from '../../services/valuation.service';
 
 @Component({
   selector: 'app-step-4',
@@ -13,7 +13,7 @@ export class Step4Component {
   valuationData = input.required<Partial<PropertyValuation>>();
   restart = output<void>();
 
-  private geminiService = inject(GeminiService);
+  private geminiService = inject(ValuationService);
   
   isSubmitted = signal(false);
   isLoadingSummary = signal(false);
