@@ -37,9 +37,12 @@ jobs:
       - name: Get latest backend image URI
         id: backend-image
         run: |
-          LATEST_BACKEND_IMAGE=$(aws ecr describe-images --repository-name ${{ secrets.ECR_BACKEND_REPOSITORY }} --query 'sort_by(imageDetails, &imagePushedAt)[-1].imageTags[0]' --output text)
-          ECR_REGISTRY=$(echo "${{ steps.build-image.outputs.image }}" | cut -d'/' -f1)
-          echo "::set-output name=uri::$ECR_REGISTRY/${{ secrets.ECR_BACKEND_REPOSITORY }}:$LATEST_BACKEND_IMAGE"
+          LATEST_BACKEND_TAG=$(aws ecr describe-images --repository-name ${{ secrets.ECR_BACKEND_REPOSITORY }} --query 'sort_by(imageDetails, &imagePushedAt)[-1].imageTags[0]' --output text)
+          # Se não encontrar tag, força 'latest'
+          if [ "$LATEST_BACKEND_TAG" == "None" ]; then LATEST_BACKEND_TAG="latest"; fi
+          
+          REGISTRY_URL="900294350529.dkr.ecr.us-east-1.amazonaws.com"
+          echo "uri=$REGISTRY_URL/${{ secrets.ECR_BACKEND_REPOSITORY }}:$LATEST_BACKEND_TAG" >> $GITHUB_OUTPUT
 
       - name: Prepare deployment file
         id: prepare-deployment
