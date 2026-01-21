@@ -1,0 +1,24 @@
+{
+  "serviceName": "property-valuation-service",
+  "containers": {
+    "property-valuation-frontend": {
+      "image": "IMAGE_PLACEHOLDER_FRONTEND",
+      "ports": {
+        "80": "HTTP"
+      }
+    },
+    "property-valuation-backend": {
+      "image": "IMAGE_PLACEHOLDER_BACKEND",
+      "ports": {
+        "8080": "HTTP"
+      }
+    }
+  },
+  "publicEndpoint": {
+    "containerName": "property-valuation-frontend",
+    "containerPort": 80,
+    "healthCheck": {
+      "path": "/"
+    }
+  }
+}

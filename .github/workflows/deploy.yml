@@ -1,0 +1,55 @@
+name: Deploy Frontend to Lightsail
+
+on:
+  push:
+    branches:
+      - master # ou main, dependendo do seu branch principal
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v2
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ secrets.AWS_REGION }}
+
+      - name: Login to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v1
+
+      - name: Build, tag, and push image to Amazon ECR
+        id: build-image
+        env:
+          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+          ECR_REPOSITORY: ${{ secrets.ECR_FRONTEND_REPOSITORY }}
+          IMAGE_TAG: ${{ github.sha }}
+        run: |
+          docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
+          docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
+          echo "::set-output name=image::$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG"
+
+      - name: Get latest backend image URI
+        id: backend-image
+        run: |
+          LATEST_BACKEND_IMAGE=$(aws ecr describe-images --repository-name ${{ secrets.ECR_BACKEND_REPOSITORY }} --query 'sort_by(imageDetails, &imagePushedAt)[-1].imageTags[0]' --output text)
+          ECR_REGISTRY=$(echo "${{ steps.build-image.outputs.image }}" | cut -d'/' -f1)
+          echo "::set-output name=uri::$ECR_REGISTRY/${{ secrets.ECR_BACKEND_REPOSITORY }}:$LATEST_BACKEND_IMAGE"
+
+      - name: Prepare deployment file
+        id: prepare-deployment
+        run: |
+          sed -e "s|IMAGE_PLACEHOLDER_FRONTEND|${{ steps.build-image.outputs.image }}|g" \
+              -e "s|IMAGE_PLACEHOLDER_BACKEND|${{ steps.backend-image.outputs.uri }}|g" \
+              lightsail-deployment.json > final-deployment.json
+          cat final-deployment.json
+
+      - name: Deploy to Amazon Lightsail
+        run: |
+          aws lightsail create-container-service-deployment --cli-input-json file://final-deployment.json
+

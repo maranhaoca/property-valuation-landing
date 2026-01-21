@@ -2,21 +2,13 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { firstValueFrom } from 'rxjs';
 import { PropertyValuation } from '../models/property-valuation.model';
+import {environment} from "../environments/environment";
 
 @Injectable({ providedIn: 'root' })
 export class GeminiService {
-  private baseUrl: string;
+  private baseUrl = environment.apiUrl;
 
-  constructor(private http: HttpClient) {
-    // Prefer a runtime override if provided (useful for local testing):
-    // e.g. in the browser console `window.BACKEND_URL = 'http://localhost:8080'`
-    if (typeof window !== 'undefined' && (window as any).BACKEND_URL) {
-      this.baseUrl = (window as any).BACKEND_URL;
-    } else {
-      // default to localhost:8080 where your backend is running
-      this.baseUrl = 'http://localhost:8080';
-    }
-  }
+  constructor(private http: HttpClient) {}
 
   async generatePropertySummary(data: PropertyValuation): Promise<string> {
     const url = `${this.baseUrl.replace(/\/$/, '')}/api/generate-summary`;
