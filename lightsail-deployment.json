@@ -11,6 +11,13 @@
       "image": "IMAGE_PLACEHOLDER_BACKEND",
       "ports": {
         "8080": "HTTP"
+      },
+      "healthCheck": {
+        "path": "/actuator/health",
+        "healthyThreshold": 2,
+        "unhealthyThreshold": 5,
+        "timeoutSeconds": 30,
+        "intervalSeconds": 35
       }
     }
   },
