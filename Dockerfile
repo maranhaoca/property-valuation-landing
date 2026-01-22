@@ -28,7 +28,7 @@ FROM nginx:alpine
 RUN rm /etc/nginx/conf.d/default.conf
 
 # Copia a configuração customizada do Nginx
-COPY nginx.conf /etc/nginx/conf.d/
+COPY default.conf /etc/nginx/conf.d/default.conf
 
 # Copia os arquivos buildados do Angular do stage anterior
 # Tentando diferentes caminhos possíveis do Angular 21
