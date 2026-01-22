@@ -56,4 +56,25 @@ export class Step1Component {
       });
     }
   }
+
+  formatZipCode(event: Event) {
+    const input = event.target as HTMLInputElement;
+    // Remove tudo que não é número
+    let value = input.value.replace(/\D/g, '');
+
+    // Limita a 7 dígitos
+    if (value.length > 7) {
+      value = value.substring(0, 7);
+    }
+
+    // Atualiza o Signal apenas com os números (para salvar no banco)
+    this.location.set(value);
+
+    // Formata a exibição no input (ex: 1234-567)
+    if (value.length > 4) {
+      input.value = `${value.slice(0, 4)}-${value.slice(4)}`;
+    } else {
+      input.value = value;
+    }
+  }
 }

@@ -1,7 +1,7 @@
 @import "tailwindcss";
 
 @theme {
-    --color-*: initial;
-    --color-era-red: oklch(45.7% 0.24 277.023);
-    --color-era-gray: gray;
+    --color-era-red: #5706e3;
+    --color-era-gray-medium: #9CA3AF;
+    --color-era-gray-dark: #374151;
 }
