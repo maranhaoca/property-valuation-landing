@@ -1,25 +1,34 @@
-# Stage 1: Build the Angular application
-FROM node:20-alpine AS builder
+# Stage 1: Build da aplicação Angular
+FROM node:18-alpine AS build
 
 WORKDIR /app
 
-# Copy package.json and package-lock.json to leverage Docker cache
+# Copia package.json e package-lock.json
 COPY package*.json ./
-RUN npm install
 
-# Copy the rest of the application files
+# Instala dependências
+RUN npm ci
+
+# Copia o código fonte
 COPY . .
 
-# Build the application for production
-# The output will be in /app/dist/ based on angular.json
+# Build da aplicação para produção
 RUN npm run build -- --configuration production
 
-# Stage 2: Serve the application with Nginx
-FROM nginx:stable-alpine
+# Stage 2: Servidor Nginx
+FROM nginx:alpine
 
-# Copy the built application from the builder stage
-# The source path /app/dist/app comes from the outputPath in angular.json
-COPY --from=builder /app/dist/. /usr/share/nginx/html
+# Remove a configuração padrão do Nginx
+RUN rm /etc/nginx/conf.d/default.conf
 
-# When the container starts, nginx will serve the files from /usr/share/nginx/html
+# Copia a configuração customizada do Nginx
+COPY nginx.conf /etc/nginx/conf.d/
+
+# Copia os arquivos buildados do Angular do stage anterior
+COPY --from=build /app/dist/property-valuation-frontend/browser /usr/share/nginx/html
+
+# Expõe a porta 80
 EXPOSE 80
+
+# Comando para iniciar o Nginx
+CMD ["nginx", "-g", "daemon off;"]
