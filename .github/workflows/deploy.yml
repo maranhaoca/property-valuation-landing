@@ -45,15 +45,21 @@ jobs:
           echo "uri=$REGISTRY_URL/${{ secrets.ECR_BACKEND_REPOSITORY }}:$LATEST_BACKEND_TAG" >> $GITHUB_OUTPUT
 
       - name: Prepare deployment file
-        id: prepare-deployment
-        env:
-          SPRING_DATASOURCE_URL: ${{ secrets.DATASOURCE_URL }}
         run: |
-          sed -e "s|IMAGE_PLACEHOLDER_FRONTEND|${{ steps.build-image.outputs.image }}|g" \
-              -e "s|IMAGE_PLACEHOLDER_BACKEND|${{ steps.backend-image.outputs.uri }}|g" \
-              -e "s|DATASOURCE_URL_PLACEHOLDER|${SPRING_DATASOURCE_URL}|g" \
-              lightsail-deployment.json > final-deployment.json
-          cat final-deployment.json
+          # 1. Cria o arquivo final a partir do template
+          cp lightsail-deployment.json final-deployment.json
+          
+          # 2. Substitui as imagens (usando | como delimitador para evitar erro com barras da URL)
+          sed -i "s|IMAGE_PLACEHOLDER_FRONTEND|${{ steps.build-image.outputs.image }}|g" final-deployment.json
+          sed -i "s|IMAGE_PLACEHOLDER_BACKEND|${{ steps.backend-image.outputs.uri }}|g" final-deployment.json
+          
+          # 3. Substitui as variáveis de ambiente pelos Segredos do GitHub
+          sed -i "s|DATASOURCE_URL|${{ secrets.DATASOURCE_URL }}|g" final-deployment.json
+          sed -i "s|DATASOURCE_USERNAME|${{ secrets.DATASOURCE_USERNAME }}|g" final-deployment.json
+          sed -i "s|DATASOURCE_PASSWORD|${{ secrets.DATASOURCE_PASSWORD }}|g" final-deployment.json
+          
+          # 4. Debug: Mostra o JSON (Ocultando a senha por segurança)
+          cat final-deployment.json | sed 's/${{ secrets.DATASOURCE_PASSWORD }}/****** /g'
 
       - name: Deploy to Amazon Lightsail
         run: |
