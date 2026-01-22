@@ -1,99 +1,84 @@
-<div class="bg-white p-8 rounded-lg shadow-md animate-fade-in">
-  <h2 class="text-2xl font-light text-gray-800 mb-6">Como é o seu imóvel?</h2>
-  
-  <form (submit)="$event.preventDefault(); onNext()">
-    <div class="space-y-8">
+<div class="bg-white p-8 md:p-12 rounded-2xl shadow-xl border border-gray-50 animate-fade-in max-w-3xl mx-auto">
+    <header class="mb-10">
+        <h2 class="text-3xl font-light text-gray-800 tracking-tight mb-2">Detalhes do seu imóvel</h2>
+        <div class="h-1 w-20 bg-era-red rounded-full"></div>
+    </header>
 
-      <!-- Estado do Imóvel -->
-      <div>
-        <label class="block text-sm font-medium text-gray-700 mb-2">Estado do Imóvel</label>
-        <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-4">
-          @for (item of ['Novo', 'Usado', 'Renovado', 'Construção', 'Planta']; track item) {
-            <label class="flex items-center cursor-pointer">
-              <input type="radio" name="propertyState" class="hidden" [value]="item" [checked]="propertyState() === item" (change)="propertyState.set($any(item))" />
-              <span class="w-5 h-5 border-2 rounded-full flex items-center justify-center transition-all" [class.border-era-red]="propertyState() === item" [class.border-gray-300]="propertyState() !== item">
-                @if (propertyState() === item) {
-                  <span class="w-2.5 h-2.5 bg-era-red rounded-full"></span>
+    <form (submit)="$event.preventDefault(); onNext()" class="space-y-10">
+
+        <div>
+            <label class="block text-sm font-semibold text-gray-500 uppercase tracking-wider mb-4">Estado do Imóvel</label>
+            <div class="flex flex-wrap gap-3">
+                @for (item of ['Novo', 'Usado', 'Renovado', 'Em Construção']; track item) {
+                    <label class="flex items-center px-5 py-3 border-2 rounded-xl cursor-pointer group"
+                           [class.border-era-red]="propertyState() === item"
+                           [class.bg-red-50/50]="propertyState() === item"
+                            [class.border-gray-100]="propertyState() !== item">
+                    <input type="radio" name="propertyState" class="hidden" [value]="item" [checked]="propertyState() === item" (change)="propertyState.set($any(item))" />
+                    <span class="w-4 h-4 border-2 rounded-full flex items-center justify-center mr-3"
+                          [class.border-era-red]="propertyState() === item"
+                          [class.border-gray-300]="propertyState() !== item">
+              @if (propertyState() === item) {
+                  <span class="w-2 h-2 bg-era-red rounded-full"></span>
+              }
+            </span>
+                    <span class="text-sm font-medium text-gray-700">{{ item }}</span>
+                    </label>
                 }
-              </span>
-              <span class="ml-2 text-gray-700 text-sm">{{ item }}</span>
-            </label>
-          }
+            </div>
         </div>
-      </div>
-      
-      <!-- Quartos & Casas de Banho -->
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <div>
-          <label for="bedrooms" class="block text-sm font-medium text-gray-700">Quartos</label>
-          <select id="bedrooms" class="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-era-red focus:border-era-red sm:text-sm" (change)="bedrooms.set(+$any($event.target).value)">
-            @for (i of [0, 1, 2, 3, 4, 5, 6]; track i) {
-              <option [value]="i" [selected]="bedrooms() === i">{{ i === 0 ? 'Quartos' : i }}</option>
-            }
-          </select>
-        </div>
-        <div>
-          <label for="bathrooms" class="block text-sm font-medium text-gray-700">Casas de Banho</label>
-          <select id="bathrooms" class="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-era-red focus:border-era-red sm:text-sm" (change)="bathrooms.set(+$any($event.target).value)">
-            @for (i of [0, 1, 2, 3, 4]; track i) {
-              <option [value]="i" [selected]="bathrooms() === i">{{ i === 0 ? 'Casas de Banho' : i }}</option>
-            }
-          </select>
-        </div>
-      </div>
 
-      <!-- Áreas -->
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <div>
-          <label for="usefulArea" class="block text-sm font-medium text-gray-700">Área Útil</label>
-          <div class="relative mt-1">
-            <input type="number" id="usefulArea" class="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-era-red focus:border-era-red sm:text-sm" placeholder="Insira a área" [value]="usefulArea()" (input)="usefulArea.set(+$any($event.target).value)">
-            <span class="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-500 text-sm">m²</span>
-          </div>
-        </div>
-        <div>
-          <label for="grossArea" class="block text-sm font-medium text-gray-700">Área Bruta</label>
-          <div class="relative mt-1">
-            <input type="number" id="grossArea" class="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-era-red focus:border-era-red sm:text-sm" placeholder="Insira a área" [value]="grossArea()" (input)="grossArea.set(+$any($event.target).value)">
-            <span class="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-500 text-sm">m²</span>
-          </div>
-        </div>
-        <div>
-          <label for="landArea" class="block text-sm font-medium text-gray-700">Área do Terreno</label>
-          <div class="relative mt-1">
-            <input type="number" id="landArea" class="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-era-red focus:border-era-red sm:text-sm" placeholder="Insira a área" [value]="landArea()" (input)="landArea.set(+$any($event.target).value)">
-            <span class="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-500 text-sm">m²</span>
-          </div>
-        </div>
-      </div>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div>
+                <label for="bedrooms" class="block text-sm font-semibold text-gray-500 uppercase tracking-wider mb-2">Quartos</label>
+                <select id="bedrooms"
+                        class="block w-full px-4 py-3 bg-gray-50 border border-gray-100 rounded-xl focus:ring-2 focus:ring-era-red focus:border-era-red appearance-none"
+                        (change)="bedrooms.set(+$any($event.target).value)">
+                    @for (i of [0, 1, 2, 3, 4, 5]; track i) {
+                        <option [value]="i" [selected]="bedrooms() === i">{{ i === 0 ? 'T0 / Estúdio' : 'T' + i }}</option>
+                    }
+                </select>
+            </div>
 
-      <!-- Certificado e Estacionamento -->
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <div>
-          <label for="energyCertificate" class="block text-sm font-medium text-gray-700">Certificado Energético</label>
-          <select id="energyCertificate" class="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-era-red focus:border-era-red sm:text-sm" (change)="energyCertificate.set($any($event.target).value)">
-            <option value="" disabled [selected]="!energyCertificate()">Certificado Energético</option>
-            <option>A+</option><option>A</option><option>B</option><option>B-</option><option>C</option><option>D</option><option>E</option><option>F</option><option>Em processo</option><option>Isento</option>
-          </select>
+            <div>
+                <label for="bathrooms" class="block text-sm font-semibold text-gray-500 uppercase tracking-wider mb-2">WCs</label>
+                <select id="bathrooms"
+                        class="block w-full px-4 py-3 bg-gray-50 border border-gray-100 rounded-xl focus:ring-2 focus:ring-era-red focus:border-era-red appearance-none"
+                        (change)="bathrooms.set(+$any($event.target).value)">
+                    @for (i of [1, 2, 3, 4, 5]; track i) {
+                        <option [value]="i" [selected]="bathrooms() === i">{{ i }}</option>
+                    }
+                </select>
+            </div>
+
+            <div>
+                <label for="usefulArea" class="block text-sm font-semibold text-gray-500 uppercase tracking-wider mb-2">Área Útil</label>
+                <div class="relative">
+                    <input type="number" id="usefulArea"
+                           class="block w-full px-4 py-3 bg-gray-50 border border-gray-100 rounded-xl focus:ring-2 focus:ring-era-red focus:border-era-red"
+                           [class.border-red-500]="submitted() && usefulArea() <= 0"
+                           placeholder="0"
+                           [value]="usefulArea() || ''"
+                           (input)="usefulArea.set(+$any($event.target).value)">
+                    <span class="absolute inset-y-0 right-0 pr-4 flex items-center text-gray-400 font-medium">m²</span>
+                </div>
+                @if (submitted() && usefulArea() <= 0) {
+                    <p class="text-red-500 text-xs mt-1 italic">Área obrigatória e superior a 0.</p>
+                }
+            </div>
         </div>
-        <div>
-          <label for="parking" class="block text-sm font-medium text-gray-700">Estacionamento</label>
-          <select id="parking" class="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-era-red focus:border-era-red sm:text-sm" (change)="parking.set($any($event.target).value)">
-             <option value="" disabled [selected]="!parking()">Estacionamento</option>
-            <option>Sem estacionamento</option><option>Lugar de garagem</option><option>Box</option>
-          </select>
+
+        <div class="pt-10 flex justify-between items-center border-t border-gray-50">
+            <button type="button"
+                    (click)="previousStep.emit()"
+                    class="text-gray-400 font-semibold py-2 px-4 hover:text-era-red transition-colors">
+                ← Voltar
+            </button>
+
+            <button type="submit"
+                    class="bg-[--color-era-red] text-white font-bold py-4 px-12 rounded-xl block border-none opacity-100">
+                Seguinte
+            </button>
         </div>
-      </div>
-      
-    </div>
-    
-    <div class="mt-8 flex justify-between items-center">
-      <button type="button" (click)="previousStep.emit()" class="text-era-red font-bold py-3 px-8 rounded-md border border-era-red hover:bg-red-50 transition-colors duration-300">
-        Anterior
-      </button>
-      <button type="submit" class="bg-era-red text-white font-bold py-3 px-8 rounded-md hover:bg-red-700 transition-colors duration-300">
-        Seguinte
-      </button>
-    </div>
-  </form>
+    </form>
 </div>

@@ -13,7 +13,7 @@ export class Step1Component {
   initialData = input<Partial<PropertyValuation>>();
   nextStep = output<Partial<PropertyValuation>>();
 
-  purpose = signal<'Vender' | 'Arrendar' | 'Trespasse'>('Vender');
+  purpose = signal<'Vender' | 'Arrendar'>('Vender');
   propertyType = signal('');
   location = signal('');
   doorNumber = signal('');
@@ -28,7 +28,6 @@ export class Step1Component {
         this.purpose.set(data.purpose || 'Vender');
         this.propertyType.set(data.propertyType || '');
         this.location.set(data.location || '');
-        this.doorNumber.set(data.doorNumber || '');
       }
     });
   }
@@ -52,7 +51,6 @@ export class Step1Component {
         purpose: this.purpose(),
         propertyType: this.propertyType(),
         location: this.location(),
-        doorNumber: this.doorNumber()
       });
     }
   }

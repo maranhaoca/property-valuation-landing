@@ -1,21 +1,15 @@
 
 export interface PropertyValuation {
   // Step 1
-  purpose: 'Vender' | 'Arrendar' | 'Trespasse';
+  purpose: 'Vender' | 'Arrendar';
   propertyType: string;
   location: string;
-  doorNumber: string;
 
   // Step 2
-  propertyState: 'Novo' | 'Usado' | 'Renovado' | 'Construção' | 'Planta';
+  propertyState: 'Novo' | 'Usado' | 'Renovado' | 'Construção';
   bedrooms: number;
   bathrooms: number;
   usefulArea: number;
-  grossArea: number;
-  landArea?: number;
-  energyCertificate: string;
-  parking: string;
-  otherFeatures: string[];
 
   // Step 3
   name: string;
