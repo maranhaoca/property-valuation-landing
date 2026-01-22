@@ -11,6 +11,11 @@
       "image": "IMAGE_PLACEHOLDER_BACKEND",
       "ports": {
         "8080": "HTTP"
+      },
+      "environment": {
+        "SPRING_DATASOURCE_URL": "DATASOURCE_URL",
+        "SPRING_DATASOURCE_USERNAME": "DATASOURCE_USERNAME",
+        "SPRING_DATASOURCE_PASSWORD": "DATASOURCE_PASSWORD"
       }
     }
   },

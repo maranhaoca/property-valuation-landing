@@ -32,7 +32,7 @@ jobs:
         run: |
           docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
-          echo "::set-output name=image::$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG"
+          echo "image=$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG" >> $GITHUB_OUTPUT
 
       - name: Get latest backend image URI
         id: backend-image
@@ -46,9 +46,12 @@ jobs:
 
       - name: Prepare deployment file
         id: prepare-deployment
+        env:
+          SPRING_DATASOURCE_URL: ${{ secrets.DATASOURCE_URL }}
         run: |
           sed -e "s|IMAGE_PLACEHOLDER_FRONTEND|${{ steps.build-image.outputs.image }}|g" \
               -e "s|IMAGE_PLACEHOLDER_BACKEND|${{ steps.backend-image.outputs.uri }}|g" \
+              -e "s|DATASOURCE_URL_PLACEHOLDER|${SPRING_DATASOURCE_URL}|g" \
               lightsail-deployment.json > final-deployment.json
           cat final-deployment.json
 
