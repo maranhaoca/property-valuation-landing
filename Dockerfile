@@ -31,7 +31,7 @@ RUN rm /etc/nginx/conf.d/default.conf
 COPY default.conf /etc/nginx/conf.d/default.conf
 
 # Copia os arquivos buildados do Angular do stage anterior
-COPY --from=build /app/dist/property-valuation-landing /usr/share/nginx/html
+COPY --from=build /app/dist/property-valuation-landing/browser /usr/share/nginx/html
 
 # Expõe a porta 80
 EXPOSE 80
