@@ -1,5 +1,5 @@
 # Stage 1: Build da aplicação Angular
-FROM node:18-alpine AS build
+FROM node:22-alpine AS build
 
 WORKDIR /app
 
@@ -13,7 +13,7 @@ RUN npm ci
 COPY . .
 
 # Build da aplicação para produção
-RUN npm run build -- --configuration production
+RUN npm run build
 
 # Stage 2: Servidor Nginx
 FROM nginx:alpine
@@ -25,7 +25,8 @@ RUN rm /etc/nginx/conf.d/default.conf
 COPY nginx.conf /etc/nginx/conf.d/
 
 # Copia os arquivos buildados do Angular do stage anterior
-COPY --from=build /app/dist/property-valuation-frontend/browser /usr/share/nginx/html
+# Angular 21 gera em dist/<project-name>/browser por padrão
+COPY --from=build /app/dist/property-valuation-landing/browser /usr/share/nginx/html
 
 # Expõe a porta 80
 EXPOSE 80
