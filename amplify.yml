@@ -8,7 +8,7 @@ frontend:
       commands:
         - npm run build
   artifacts:
-    baseDirectory: dist/property-valuation-landing/browser
+    baseDirectory: dist/browser
     files:
       - '**/*'
   cache:
