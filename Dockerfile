@@ -15,6 +15,12 @@ COPY . .
 # Build da aplicação para produção
 RUN npm run build
 
+# Debug: mostra o conteúdo do diretório dist
+RUN echo "=== Conteúdo de /app/dist ===" && \
+    ls -la /app/dist || echo "Pasta dist não existe" && \
+    echo "=== Estrutura completa ===" && \
+    find /app/dist -type f 2>/dev/null || echo "Nada encontrado"
+
 # Stage 2: Servidor Nginx
 FROM nginx:alpine
 
@@ -25,8 +31,8 @@ RUN rm /etc/nginx/conf.d/default.conf
 COPY nginx.conf /etc/nginx/conf.d/
 
 # Copia os arquivos buildados do Angular do stage anterior
-# Angular 21 gera em dist/<project-name>/browser por padrão
-COPY --from=build /app/dist/property-valuation-landing/browser /usr/share/nginx/html
+# Tentando diferentes caminhos possíveis do Angular 21
+COPY --from=build /app/dist /usr/share/nginx/html
 
 # Expõe a porta 80
 EXPOSE 80
