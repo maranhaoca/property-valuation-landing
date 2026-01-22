@@ -11,7 +11,7 @@ export class ValuationService {
   constructor(private http: HttpClient) {}
 
   async generatePropertySummary(data: PropertyValuation): Promise<string> {
-    const url = `${this.baseUrl.replace(/\/$/, '')}/api/generate-summary`;
+    const url = `${this.baseUrl}/generate-summary`;
     try {
       const resp = await firstValueFrom(
         this.http.post<{ summary?: string; text?: string }>(url, data)
@@ -33,7 +33,7 @@ export class ValuationService {
    * - lead: { name, email, phone, allowContact: privacyPolicy }
    */
   async submitValuation(tenantSlug: string, data: PropertyValuation): Promise<any> {
-    const url = `${this.baseUrl.replace(/\/$/, '')}/api/${encodeURIComponent(tenantSlug)}/valuation`;
+    const url = `${this.baseUrl}/${encodeURIComponent(tenantSlug)}/valuation`;
 
     const body = {
       propertyType: this.mapPropertyType(data.propertyType),
