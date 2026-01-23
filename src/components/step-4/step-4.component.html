@@ -34,7 +34,14 @@
             @if (valuationData().name) {
                 <div class="py-3 flex justify-between text-sm">
                     <span class="font-medium text-gray-600">Contato</span>
-                    <span class="text-gray-800">{{ valuationData().name }} ({{ valuationData().email }})</span>
+                    <span class="text-gray-800">{{ valuationData().name }} ({{ valuationData().phone | phone }})</span>
+                </div>
+            }
+
+            @if (valuationData().email) {
+                <div class="py-3 flex justify-between text-sm">
+                    <span class="font-medium text-gray-600">Email</span>
+                    <span class="text-gray-800">{{ valuationData().email }}</span>
                 </div>
             }
         </div>

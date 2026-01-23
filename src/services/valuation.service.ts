@@ -10,36 +10,14 @@ export class ValuationService {
 
   constructor(private http: HttpClient) {}
 
-  async generatePropertySummary(data: PropertyValuation): Promise<string> {
-    const url = `${this.baseUrl}/generate-summary`;
-    try {
-      const resp = await firstValueFrom(
-        this.http.post<{ summary?: string; text?: string }>(url, data)
-      );
-      return (resp && (resp.summary || resp.text)) || '';
-    } catch (error) {
-      console.error('Error calling backend generate endpoint:', error);
-      throw new Error('Failed to generate property summary via backend.');
-    }
-  }
-
-  /**
-   * Envia um pedido de valuation para o backend: POST /api/{tenantSlug}/valuation
-   * Mapeamentos:
-   * - propertyType: 'Apartamento' -> APARTMENT, 'Casa' -> HOUSE
-   * - typology: mapear por número de quartos: 0->T0, 1->T1, 2->T2, 3->T3, 4->T4, 5+->T5
-   * - areaM2: usefulArea
-   * - condition: mapear de propertyState para PropertyCondition: 'Novo'->NEW, 'Usado'->GOOD, 'Renovado'->GOOD, 'Construção'->TO_RENOVATE, 'Planta'->NEW
-   * - lead: { name, email, phone, allowContact: privacyPolicy }
-   */
   async submitValuation(tenantSlug: string, data: PropertyValuation): Promise<any> {
     const url = `${this.baseUrl}/${encodeURIComponent(tenantSlug)}/valuation`;
 
     const body = {
       propertyType: this.mapPropertyType(data.propertyType),
       typology: this.mapTypology(data.bedrooms),
-      areaM2: data.area,
-      condition: this.mapCondition(data.propertyState),
+      area: data.area,
+      zipCode: data.zipCode,
       lead: {
         name: data.name,
         email: data.email,
@@ -69,12 +47,5 @@ export class ValuationService {
     if (bedrooms === 3) return 'T3';
     if (bedrooms === 4) return 'T4';
     return 'T5';
-  }
-
-  private mapCondition(state: string): 'NEW' | 'GOOD' | 'TO_RENOVATE' {
-    const s = (state || '').toLowerCase();
-    if (s === 'novo' || s === 'planta') return 'NEW';
-    if (s === 'usado' || s === 'renovado' || s === 'construção') return 'GOOD';
-    return 'TO_RENOVATE';
   }
 }

@@ -66,4 +66,16 @@ export class Step3Component {
       });
     }
   }
+
+  formatPhone(event: Event) {
+    const input = event.target as HTMLInputElement;
+    let value = input.value.replace(/\D/g, '');
+
+    if (value.length > 9) value = value.substring(0, 9);
+
+    this.phone.set(value);
+
+    // Formata a exibição: 912 345 678
+    input.value = value.replace(/(\d{3})(\d{3})(\d{3})/, '$1 $2 $3').trim();
+  }
 }

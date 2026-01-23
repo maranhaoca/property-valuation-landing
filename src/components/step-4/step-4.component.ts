@@ -3,12 +3,13 @@ import { CommonModule } from '@angular/common';
 import { PropertyValuation } from '../../models/property-valuation.model';
 import { ValuationService } from '../../services/valuation.service';
 import {ZipCodeFormatPipe} from "@/src/shared/pipes/zip-code-format.pipe";
+import {PhonePipe} from "@/src/shared/pipes/phone-format.pipe";
 
 @Component({
   selector: 'app-step-4',
   templateUrl: './step-4.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [CommonModule, ZipCodeFormatPipe],
+  imports: [CommonModule, ZipCodeFormatPipe, PhonePipe],
 })
 export class Step4Component {
   valuationData = input.required<Partial<PropertyValuation>>();
