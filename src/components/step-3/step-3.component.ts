@@ -26,12 +26,12 @@ export class Step3Component {
     effect(() => {
       const data = this.initialData();
       if (data) {
-        this.name.set(data.name || '');
-        this.email.set(data.email || '');
-        this.phone.set(data.phone || '');
-        this.privacyPolicy.set(data.privacyPolicy || false);
+        if (data.name) this.name.set(data.name);
+        if (data.email) this.email.set(data.email);
+        if (data.phone) this.phone.set(data.phone);
+        if (data.privacyPolicy) this.privacyPolicy.set(data.privacyPolicy);
       }
-    });
+    }, { allowSignalWrites: true });
   }
 
   isEmailValid(email: string): boolean {

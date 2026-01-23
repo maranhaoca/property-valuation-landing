@@ -1,72 +1,85 @@
-
 <div class="bg-white p-8 rounded-lg shadow-md animate-fade-in">
-  <h2 class="text-2xl font-light text-gray-800 mb-6">Dados pessoais</h2>
+    <header class="mb-10">
+        <h2 class="text-3xl font-light text-gray-800 tracking-tight mb-2">Dados de Contato</h2>
+        <div class="h-1 w-20 bg-era-red rounded-full"></div>
+    </header>
 
-  <form (submit)="$event.preventDefault(); onNext()">
-    <div class="space-y-6">
-      
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <div>
-          <label for="name" class="block text-sm font-medium text-gray-700">Nome</label>
-          <input type="text" id="name" 
-                 class="mt-1 block w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-era-red focus:border-era-red sm:text-sm"
-                 [class.border-red-500]="submitted() && errors()['name']"
-                 [class.border-gray-300]="!submitted() || !errors()['name']"
-                 [value]="name()" (input)="name.set($any($event.target).value)">
-          @if (submitted() && errors()['name']) { <p class="mt-1 text-xs text-red-600">{{ errors()['name'] }}</p> }
-        </div>
-        <div>
-          <label for="email" class="block text-sm font-medium text-gray-700">E-mail</label>
-          <input type="email" id="email"
-                 class="mt-1 block w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-era-red focus:border-era-red sm:text-sm"
-                 [class.border-red-500]="submitted() && errors()['email']"
-                 [class.border-gray-300]="!submitted() || !errors()['email']"
-                 [value]="email()" (input)="email.set($any($event.target).value)">
-          @if (submitted() && errors()['email']) { <p class="mt-1 text-xs text-red-600">{{ errors()['email'] }}</p> }
-        </div>
-      </div>
+    <form (submit)="$event.preventDefault(); onNext()">
+        <div class="space-y-6">
 
-      <div>
-        <label for="phone" class="block text-sm font-medium text-gray-700">Telefone</label>
-        <div class="mt-1 flex rounded-md shadow-sm">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                    <label for="name" class="block text-sm font-medium text-gray-700">Nome</label>
+                    <input type="text" id="name"
+                           class="mt-1 block w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-era-red focus:border-era-red sm:text-sm"
+                           [class.border-red-500]="submitted() && errors()['name']"
+                           [class.border-gray-300]="!submitted() || !errors()['name']"
+                           [value]="name()" (input)="name.set($any($event.target).value)">
+                    @if (submitted() && errors()['name']) {
+                        <p class="mt-1 text-xs text-red-600">{{ errors()['name'] }}</p>
+                    }
+                </div>
+                <div>
+                    <label for="email" class="block text-sm font-medium text-gray-700">E-mail</label>
+                    <input type="email" id="email"
+                           class="mt-1 block w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-era-red focus:border-era-red sm:text-sm"
+                           [class.border-red-500]="submitted() && errors()['email']"
+                           [class.border-gray-300]="!submitted() || !errors()['email']"
+                           [value]="email()" (input)="email.set($any($event.target).value)">
+                    @if (submitted() && errors()['email']) {
+                        <p class="mt-1 text-xs text-red-600">{{ errors()['email'] }}</p>
+                    }
+                </div>
+            </div>
+
+            <div>
+                <label for="phone" class="block text-sm font-medium text-gray-700">Telefone</label>
+                <div class="mt-1 flex rounded-md shadow-sm">
           <span class="inline-flex items-center px-3 rounded-l-md border border-r-0 border-gray-300 bg-gray-50 text-gray-500 text-sm">
             🇵🇹 +351
           </span>
-          <input type="tel" id="phone"
-                 class="flex-1 block w-full rounded-none rounded-r-md px-3 py-2 border focus:outline-none focus:ring-era-red focus:border-era-red sm:text-sm"
-                 [class.border-red-500]="submitted() && errors()['phone']"
-                 [class.border-gray-300]="!submitted() || !errors()['phone']"
-                 [value]="phone()" (input)="phone.set($any($event.target).value)">
+                    <input type="tel" id="phone"
+                           class="flex-1 block w-full rounded-none rounded-r-md px-3 py-2 border focus:outline-none focus:ring-era-red focus:border-era-red sm:text-sm"
+                           [class.border-red-500]="submitted() && errors()['phone']"
+                           [class.border-gray-300]="!submitted() || !errors()['phone']"
+                           [value]="phone()" (input)="phone.set($any($event.target).value)">
+                </div>
+                @if (submitted() && errors()['phone']) {
+                    <p class="mt-1 text-xs text-red-600">{{ errors()['phone'] }}</p>
+                }
+            </div>
+
+            <div class="text-xs text-gray-500">
+                <p>Ao submeter o pedido está a autorizar-nos a guardar os seus dados para o informar sobre oportunidades
+                    de negócio.</p>
+            </div>
+
+            <div>
+                <label class="flex items-start cursor-pointer">
+                    <input type="checkbox"
+                           class="h-4 w-4 mt-0.5 rounded border-gray-300 text-era-red focus:ring-era-red"
+                           [checked]="privacyPolicy()"
+                           (change)="privacyPolicy.set($any($event.target).checked)">
+                    <div class="ml-3 text-sm">
+                        <span class="text-gray-700">Autorizo a XPTO a guardar os meus dados para me informar sobre oportunidades de carreira, campanhas de marketing e propostas de financiamento.</span>
+                    </div>
+                </label>
+                @if (submitted() && errors()['privacyPolicy']) {
+                    <p class="mt-1 ml-7 text-xs text-red-600">{{ errors()['privacyPolicy'] }}</p>
+                }
+            </div>
+
         </div>
-        @if (submitted() && errors()['phone']) { <p class="mt-1 text-xs text-red-600">{{ errors()['phone'] }}</p> }
-      </div>
-      
-      <div class="text-xs text-gray-500">
-        <p>Ao submeter o pedido está a autorizar-nos a guardar os seus dados para o informar sobre oportunidades de negócio.</p>
-      </div>
 
-      <div>
-        <label class="flex items-start cursor-pointer">
-          <input type="checkbox" class="h-4 w-4 mt-0.5 rounded border-gray-300 text-era-red focus:ring-era-red" 
-                 [checked]="privacyPolicy()" 
-                 (change)="privacyPolicy.set($any($event.target).checked)">
-          <div class="ml-3 text-sm">
-            <span class="text-gray-700">Autorizo a ERA Portugal e as Agências ERA a guardar os meus dados para me informar sobre oportunidades de carreira, campanhas de marketing e propostas de financiamento.</span>
-            <p class="text-gray-500 text-xs mt-1">Para mais informações consulte a nossa <a href="#" class="text-era-red underline">Política de Privacidade</a>.</p>
-          </div>
-        </label>
-        @if (submitted() && errors()['privacyPolicy']) { <p class="mt-1 ml-7 text-xs text-red-600">{{ errors()['privacyPolicy'] }}</p> }
-      </div>
-      
-    </div>
-
-    <div class="mt-8 flex justify-between items-center">
-      <button type="button" (click)="previousStep.emit()" class="text-era-red font-bold py-3 px-8 rounded-md border border-era-red hover:bg-red-50 transition-colors duration-300">
-        Anterior
-      </button>
-      <button type="submit" class="bg-era-red text-white font-bold py-3 px-8 rounded-md hover:bg-red-700 transition-colors duration-300">
-        Seguinte
-      </button>
-    </div>
-  </form>
+        <div class="pt-10 flex justify-between items-center border-t border-gray-50">
+            <button type="button" (click)="previousStep.emit()"
+                    class="text-black font-bold py-4 px-8 rounded-xl border border-b-era-gray-dark hover:bg-red-50 transition-colors duration-300">
+                Anterior
+            </button>
+            <button type="submit"
+                    class="bg-[--color-era-red] text-white font-bold py-4 px-12 rounded-xl block border-none opacity-100">
+                Seguinte
+            </button>
+        </div>
+    </form>
 </div>

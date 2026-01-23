@@ -3,13 +3,13 @@ export interface PropertyValuation {
   // Step 1
   purpose: 'Vender' | 'Arrendar';
   propertyType: string;
-  location: string;
+  zipCode: string;
 
   // Step 2
   propertyState: 'Novo' | 'Usado' | 'Renovado' | 'Construção';
   bedrooms: number;
   bathrooms: number;
-  usefulArea: number;
+  area: number;
 
   // Step 3
   name: string;

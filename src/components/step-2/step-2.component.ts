@@ -30,7 +30,7 @@ export class Step2Component {
                 this.propertyState.set(data.propertyState as any || 'Usado');
                 this.bedrooms.set(data.bedrooms || 0);
                 this.bathrooms.set(data.bathrooms || 1);
-                this.usefulArea.set(data.usefulArea || 0);
+                this.usefulArea.set(data.area || 0);
             }
         }, {allowSignalWrites: true});
     }
@@ -44,7 +44,7 @@ export class Step2Component {
                 propertyState: this.propertyState(),
                 bedrooms: this.bedrooms(),
                 bathrooms: this.bathrooms(),
-                usefulArea: this.usefulArea(),
+                area: this.usefulArea(),
             });
         }
     }

@@ -12,17 +12,16 @@
                 @for (item of ['Vender', 'Arrendar']; track item) {
                     <label class="flex items-center px-6 py-3 border-2 rounded-xl cursor-pointer transition-none group"
                            [class.border-era-red]="purpose() === item"
-                           [class.bg-red-50/50]="purpose() === item"
                             [class.border-gray-100]="purpose() !== item">
                     <input type="radio" name="purpose" class="hidden" [value]="item" [checked]="purpose() === item"
                            (change)="purpose.set($any(item))"/>
                     <span class="w-5 h-5 border-2 rounded-full flex items-center justify-center mr-3 transition-none"
                           [class.border-era-red]="purpose() === item"
                           [class.border-gray-300]="purpose() !== item">
-              @if (purpose() === item) {
-                  <span class="w-2.5 h-2.5 bg-era-red rounded-full"></span>
-              }
-            </span>
+                        @if (purpose() === item) {
+                            <span class="w-2.5 h-2.5 bg-era-red rounded-full"></span>
+                        }
+                    </span>
                     <span class="font-medium text-gray-700">{{ item }}</span>
                     </label>
                 }
@@ -38,11 +37,10 @@
                         class="block w-full px-4 py-3 bg-gray-50 border border-gray-100 rounded-xl focus:ring-2 focus:ring-era-red focus:border-era-red appearance-none"
                         [class.border-red-500]="submitted() && errors()['propertyType']"
                         (change)="propertyType.set($any($event.target).value)">
-                    <option value="" disabled [selected]="!propertyType()">Selecione o tipo</option>
-                    <option value="Apartamento">Apartamento</option>
-                    <option value="Moradia">Moradia</option>
-                    <option value="Terreno">Terreno</option>
-                    <option value="Loja">Loja</option>
+                    <option value="Apartamento" [selected]="propertyType() === 'Apartamento'">Apartamento</option>
+                    <option value="Moradia" [selected]="propertyType() === 'Moradia'">Moradia</option>
+                    <option value="Terreno" [selected]="propertyType() === 'Terreno'">Terreno</option>
+                    <option value="Loja" [selected]="propertyType() === 'Loja'">Loja</option>
                 </select>
             </div>
 
@@ -62,8 +60,9 @@
                     <input type="text"
                            id="location"
                            class="block w-full pl-12 pr-4 py-3 bg-gray-50 border border-gray-100 rounded-xl focus:ring-2 focus:ring-era-red focus:border-era-red"
-                           [class.border-red-500]="submitted() && errors()['location']"
+                           [class.border-red-500]="submitted() && (errors()['location'] || location().length < 7)"
                            placeholder="0000-000"
+                           [value]="getFormattedZip(location())"
                            (input)="formatZipCode($event)">
                 </div>
                 @if (submitted() && location().length < 7) {

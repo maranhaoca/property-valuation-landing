@@ -22,7 +22,7 @@
           <app-step-3 [initialData]="valuationData()" (nextStep)="handleNextStep($event)" (previousStep)="handlePreviousStep()"/>
         }
         @case (4) {
-          <app-step-4 [valuationData]="valuationData()" (restart)="restart()"/>
+          <app-step-4 [valuationData]="valuationData()" (previousStep)="handlePreviousStep()" (restart)="restart()"/>
         }
       }
     </div>

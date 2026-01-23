@@ -14,10 +14,8 @@ export class Step1Component {
   nextStep = output<Partial<PropertyValuation>>();
 
   purpose = signal<'Vender' | 'Arrendar'>('Vender');
-  propertyType = signal('');
+  propertyType = signal('Apartamento');
   location = signal('');
-  doorNumber = signal('');
-  
   submitted = signal(false);
   errors = signal<{ [key: string]: string }>({});
 
@@ -25,11 +23,11 @@ export class Step1Component {
     effect(() => {
       const data = this.initialData();
       if (data) {
-        this.purpose.set(data.purpose || 'Vender');
-        this.propertyType.set(data.propertyType || '');
-        this.location.set(data.location || '');
+        if (data.purpose) this.purpose.set(data.purpose);
+        if (data.propertyType) this.propertyType.set(data.propertyType);
+        if (data.zipCode) this.location.set(data.zipCode);
       }
-    });
+    }, { allowSignalWrites: true });
   }
 
   validate(): boolean {
@@ -50,29 +48,23 @@ export class Step1Component {
       this.nextStep.emit({
         purpose: this.purpose(),
         propertyType: this.propertyType(),
-        location: this.location(),
+        zipCode: this.location(),
       });
     }
   }
 
+  getFormattedZip(value: string): string {
+    if (!value) return '';
+    const digits = value.replace(/\D/g, '');
+    return digits.length > 4 ? `${digits.slice(0, 4)}-${digits.slice(4, 7)}` : digits;
+  }
+
   formatZipCode(event: Event) {
     const input = event.target as HTMLInputElement;
-    // Remove tudo que não é número
     let value = input.value.replace(/\D/g, '');
+    if (value.length > 7) value = value.substring(0, 7);
 
-    // Limita a 7 dígitos
-    if (value.length > 7) {
-      value = value.substring(0, 7);
-    }
-
-    // Atualiza o Signal apenas com os números (para salvar no banco)
     this.location.set(value);
-
-    // Formata a exibição no input (ex: 1234-567)
-    if (value.length > 4) {
-      input.value = `${value.slice(0, 4)}-${value.slice(4)}`;
-    } else {
-      input.value = value;
-    }
+    input.value = this.getFormattedZip(value);
   }
 }

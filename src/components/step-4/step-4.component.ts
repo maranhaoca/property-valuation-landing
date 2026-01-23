@@ -2,41 +2,26 @@ import { ChangeDetectionStrategy, Component, inject, input, output, signal } fro
 import { CommonModule } from '@angular/common';
 import { PropertyValuation } from '../../models/property-valuation.model';
 import { ValuationService } from '../../services/valuation.service';
+import {ZipCodeFormatPipe} from "@/src/shared/pipes/zip-code-format.pipe";
 
 @Component({
   selector: 'app-step-4',
   templateUrl: './step-4.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [CommonModule]
+  imports: [CommonModule, ZipCodeFormatPipe],
 })
 export class Step4Component {
   valuationData = input.required<Partial<PropertyValuation>>();
+  previousStep = output<void>();
   restart = output<void>();
 
   private geminiService = inject(ValuationService);
   
   isSubmitted = signal(false);
-  isLoadingSummary = signal(false);
   isSubmitting = signal(false);
-  aiSummary = signal('');
   error = signal('');
   successMessage = signal('');
 
-  async generateSummary() {
-    this.isLoadingSummary.set(true);
-    this.error.set('');
-    this.aiSummary.set('');
-    try {
-      const summary = await this.geminiService.generatePropertySummary(this.valuationData() as PropertyValuation);
-      this.aiSummary.set(summary);
-    } catch (err) {
-      this.error.set('Não foi possível gerar o sumário. Tente novamente.');
-      console.error(err);
-    } finally {
-      this.isLoadingSummary.set(false);
-    }
-  }
-  
   async submitRequest(): Promise<void> {
     this.isSubmitting.set(true);
     this.error.set('');
@@ -56,9 +41,5 @@ export class Step4Component {
     } finally {
       this.isSubmitting.set(false);
     }
-  }
-
-  restartFlow(): void {
-    this.restart.emit();
   }
 }
