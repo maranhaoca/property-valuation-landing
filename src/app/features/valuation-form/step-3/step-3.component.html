@@ -62,7 +62,12 @@
                            [checked]="privacyPolicy()"
                            (change)="privacyPolicy.set($any($event.target).checked)">
                     <div class="ml-3 text-sm">
-                        <span class="text-gray-700">Autorizo a XPTO a guardar os meus dados para me informar sobre oportunidades de carreira, campanhas de marketing e propostas de financiamento.</span>
+                        <label for="privacy" class="text-gray-600 leading-snug cursor-pointer">
+                            Autorizo a XPTO a guardar os meus dados para me informar sobre oportunidades de carreira,
+                            campanhas de marketing e propostas de financiamento, de acordo com a
+                            <a routerLink="/privacidade" target="_blank" class="text-era-red font-bold underline">Política
+                                de Privacidade</a>.
+                        </label>
                     </div>
                 </label>
                 @if (submitted() && errors()['privacyPolicy']) {
@@ -78,7 +83,7 @@
                 Anterior
             </button>
             <button type="submit"
-                    class="bg-[--color-era-red] text-white font-bold py-4 px-12 rounded-xl block border-none opacity-100">
+                    class="bg-era-red text-white font-bold py-4 px-12 rounded-xl block border-none opacity-100">
                 Seguinte
             </button>
         </div>

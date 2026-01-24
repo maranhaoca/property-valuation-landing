@@ -1,9 +1,9 @@
 import { ChangeDetectionStrategy, Component, inject, input, output, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { PropertyValuation } from '../../models/property-valuation.model';
-import { ValuationService } from '../../services/valuation.service';
-import {ZipCodeFormatPipe} from "@/src/shared/pipes/zip-code-format.pipe";
-import {PhonePipe} from "@/src/shared/pipes/phone-format.pipe";
+import {ZipCodeFormatPipe} from "../../../shared/pipes/zip-code-format.pipe";
+import {PhonePipe} from "../../../shared/pipes/phone-format.pipe";
+import {PropertyValuation} from "../../../shared/models/property-valuation.model";
+import {ValuationService} from "../../../core/services/valuation.service";
 
 @Component({
   selector: 'app-step-4',

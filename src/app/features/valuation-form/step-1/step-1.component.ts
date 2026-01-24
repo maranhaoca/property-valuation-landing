@@ -1,7 +1,7 @@
 
 import { ChangeDetectionStrategy, Component, output, signal, effect, input } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { PropertyValuation } from '../../models/property-valuation.model';
+import {PropertyValuation} from "../../../shared/models/property-valuation.model";
 
 @Component({
   selector: 'app-step-1',
@@ -27,7 +27,7 @@ export class Step1Component {
         if (data.propertyType) this.propertyType.set(data.propertyType);
         if (data.zipCode) this.location.set(data.zipCode);
       }
-    }, { allowSignalWrites: true });
+    });
   }
 
   validate(): boolean {

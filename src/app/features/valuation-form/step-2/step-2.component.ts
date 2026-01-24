@@ -1,6 +1,6 @@
 import {ChangeDetectionStrategy, Component, effect, input, output, signal} from '@angular/core';
 import {CommonModule} from '@angular/common';
-import {PropertyValuation} from '../../models/property-valuation.model';
+import {PropertyValuation} from "../../../shared/models/property-valuation.model";
 
 @Component({
     selector: 'app-step-2',
@@ -32,7 +32,7 @@ export class Step2Component {
                 this.bathrooms.set(data.bathrooms || 1);
                 this.usefulArea.set(data.area || 0);
             }
-        }, {allowSignalWrites: true});
+        });
     }
 
     onNext(): void {

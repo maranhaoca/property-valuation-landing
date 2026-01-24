@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { firstValueFrom } from 'rxjs';
-import { PropertyValuation } from '../models/property-valuation.model';
-import {environment} from "../environments/environment";
+import { PropertyValuation } from '../../shared/models/property-valuation.model';
+import {environment} from "../../../environments/environment";
 
 @Injectable({ providedIn: 'root' })
 export class ValuationService {

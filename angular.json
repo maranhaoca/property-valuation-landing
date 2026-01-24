@@ -6,14 +6,15 @@
     "app": {
       "projectType": "application",
       "root": "",
-      "sourceRoot": "./",
+      "sourceRoot": "src",
       "prefix": "app",
       "architect": {
         "build": {
           "builder": "@angular/build:application",
           "options": {
             "outputPath": "./dist",
-            "browser": "index.tsx",
+            "index": "src/index.html",
+            "browser": "src/index.tsx",
             "styles": [
               "src/styles.css"
             ],

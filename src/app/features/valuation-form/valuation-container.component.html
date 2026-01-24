@@ -1,0 +1,38 @@
+<div class="min-h-screen bg-gray-50 py-12 px-4">
+    <div class="max-w-4xl mx-auto">
+
+        <header class="text-center mb-12">
+            <h1 class="text-4xl font-bold text-gray-900 mb-2 tracking-tight">Avalie o seu Imóvel</h1>
+            <p class="text-gray-500 text-lg">Receba uma avaliação gratuita e precisa do seu imóvel.</p>
+        </header>
+
+        <app-stepper [currentStep]="currentStep()"></app-stepper>
+
+        <main class="mt-12">
+            @switch (currentStep()) {
+                @case (1) {
+                    <app-step-1
+                            [initialData]="valuationData()"
+                            (nextStep)="handleNextStep($event)"></app-step-1>
+                }
+                @case (2) {
+                    <app-step-2
+                            [initialData]="valuationData()"
+                            (nextStep)="handleNextStep($event)"
+                            (previousStep)="handlePreviousStep()"></app-step-2>
+                }
+                @case (3) {
+                    <app-step-3
+                            [initialData]="valuationData()"
+                            (nextStep)="handleNextStep($event)"
+                            (previousStep)="handlePreviousStep()"></app-step-3>
+                }
+                @case (4) {
+                    <app-step-4 [valuationData]="valuationData()" (previousStep)="handlePreviousStep()" (restart)="restart()"/>
+
+                }
+            }
+        </main>
+
+    </div>
+</div>

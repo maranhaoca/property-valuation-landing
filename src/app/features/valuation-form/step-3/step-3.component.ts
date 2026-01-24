@@ -1,13 +1,14 @@
 
 import { ChangeDetectionStrategy, Component, output, signal, effect, input } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { PropertyValuation } from '../../models/property-valuation.model';
+import {RouterLink} from "@angular/router";
+import {PropertyValuation} from "../../../shared/models/property-valuation.model";
 
 @Component({
   selector: 'app-step-3',
   templateUrl: './step-3.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [CommonModule]
+  imports: [CommonModule, RouterLink]
 })
 export class Step3Component {
   initialData = input<Partial<PropertyValuation>>();
@@ -31,7 +32,7 @@ export class Step3Component {
         if (data.phone) this.phone.set(data.phone);
         if (data.privacyPolicy) this.privacyPolicy.set(data.privacyPolicy);
       }
-    }, { allowSignalWrites: true });
+    });
   }
 
   isEmailValid(email: string): boolean {
