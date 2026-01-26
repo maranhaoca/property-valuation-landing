@@ -15,7 +15,8 @@ export class ValuationService {
 
     const body = {
       propertyType: this.mapPropertyType(data.propertyType),
-      typology: data.bedrooms,
+      bedrooms: data.bedrooms,
+      bathrooms: data.bathrooms,
       area: data.area,
       zipCode: data.zipCode,
       lead: {
