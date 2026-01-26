@@ -16,7 +16,7 @@ export class Step4Component {
   previousStep = output<void>();
   restart = output<void>();
 
-  private geminiService = inject(ValuationService);
+  private valuationService = inject(ValuationService);
   
   isSubmitted = signal(false);
   isSubmitting = signal(false);
@@ -29,10 +29,9 @@ export class Step4Component {
     this.successMessage.set('');
 
     try {
-      const tenant = (typeof window !== 'undefined' && (window as any).TENANT_SLUG) || 'test-agent';
       const payload = this.valuationData() as PropertyValuation;
 
-      await this.geminiService.submitValuation(tenant, payload);
+      await this.valuationService.submitValuation(payload);
 
       this.successMessage.set('Pedido enviado com sucesso. Obrigado!');
       this.isSubmitted.set(true);

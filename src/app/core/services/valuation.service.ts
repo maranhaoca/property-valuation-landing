@@ -10,12 +10,12 @@ export class ValuationService {
 
   constructor(private http: HttpClient) {}
 
-  async submitValuation(tenantSlug: string, data: PropertyValuation): Promise<any> {
-    const url = `${this.baseUrl}/${encodeURIComponent(tenantSlug)}/valuation`;
+  async submitValuation(data: PropertyValuation): Promise<any> {
+    const url = `${this.baseUrl}/valuation`;
 
     const body = {
       propertyType: this.mapPropertyType(data.propertyType),
-      typology: this.mapTypology(data.bedrooms),
+      typology: data.bedrooms,
       area: data.area,
       zipCode: data.zipCode,
       lead: {
@@ -38,14 +38,5 @@ export class ValuationService {
     const v = (input || '').toLowerCase();
     if (v.includes('apart') || v.includes('apartamento') || v.includes('apartment')) return 'APARTMENT';
     return 'HOUSE';
-  }
-
-  private mapTypology(bedrooms: number): string {
-    if (bedrooms <= 0) return 'T0';
-    if (bedrooms === 1) return 'T1';
-    if (bedrooms === 2) return 'T2';
-    if (bedrooms === 3) return 'T3';
-    if (bedrooms === 4) return 'T4';
-    return 'T5';
   }
 }
