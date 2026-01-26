@@ -43,6 +43,7 @@
                            placeholder="000 000 000"
                            [class.border-red-500]="submitted() && errors()['phone']"
                            [class.border-gray-300]="!submitted() || !errors()['phone']"
+                           [value]="phone() | phone"
                            (input)="formatPhone($event)">
                 </div>
                 @if (submitted() && errors()['phone']) {

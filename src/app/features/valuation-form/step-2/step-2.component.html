@@ -31,12 +31,12 @@
 
         <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
             <div>
-                <label for="bedrooms" class="block text-sm font-semibold text-gray-500 uppercase tracking-wider mb-2">Tipologia</label>
+                <label for="bedrooms" class="block text-sm font-semibold text-gray-500 uppercase tracking-wider mb-2">Quartos</label>
                 <select id="bedrooms"
                         class="block w-full px-4 py-3 bg-gray-50 border border-gray-100 rounded-xl focus:ring-2 focus:ring-era-red focus:border-era-red appearance-none"
                         (change)="bedrooms.set(+$any($event.target).value)">
                     @for (i of [0, 1, 2, 3, 4, 5]; track i) {
-                        <option [value]="i" [selected]="bedrooms() === i">{{ i === 0 ? 'T0 / Estúdio' : 'T' + i }}
+                        <option [value]="i" [selected]="bedrooms() === i">{{ i }}
                         </option>
                     }
                 </select>
