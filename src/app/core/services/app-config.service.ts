@@ -31,7 +31,7 @@ export class AppConfigService {
    * Chamado no APP_INITIALIZER
    */
   loadConfig(): Observable<void> {
-    return this.http.get<AppConfig>(`${this.baseUrl}/v1/init`).pipe(
+    return this.http.get<AppConfig>(`${this.baseUrl}/v1/initialize`).pipe(
       tap(config => {
         this.config.set(config);
         this.applyBranding(config);
