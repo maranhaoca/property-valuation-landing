@@ -3,18 +3,26 @@ import {CommonModule} from '@angular/common';
 import {PropertyValuation} from "../../../shared/models/property-valuation.model";
 
 @Component({
-    selector: 'app-step-2',
-    templateUrl: './step-2.component.html',
+    selector: 'app-property-details',
+    templateUrl: './property-details.component.html',
     changeDetection: ChangeDetectionStrategy.OnPush,
     imports: [CommonModule]
 })
-export class Step2Component {
+export class PropertyDetailsComponent {
     initialData = input<Partial<PropertyValuation>>();
     nextStep = output<Partial<PropertyValuation>>();
     previousStep = output<void>();
 
-    propertyState = signal<'Novo' | 'Usado' | 'Renovado' | 'Construção'>('Usado');
-    bedrooms = signal(0);
+    // Opções de estado: value em inglês (backend), label em português (UI)
+    stateOptions = [
+        { value: 'NEW' as const, label: 'Novo' },
+        { value: 'USED' as const, label: 'Usado' },
+        { value: 'RENOVATED' as const, label: 'Renovado' },
+        { value: 'UNDER_CONSTRUCTION' as const, label: 'Em Construção' }
+    ];
+
+    propertyState = signal<'NEW' | 'USED' | 'RENOVATED' | 'UNDER_CONSTRUCTION'>('USED'); // Padrão: Usado
+    bedrooms = signal(2); // Padrão: 2 quartos (T2)
     bathrooms = signal(1);
     usefulArea = signal(0);
 
@@ -24,8 +32,8 @@ export class Step2Component {
         effect(() => {
             const data = this.initialData();
             if (data) {
-                this.propertyState.set(data.propertyState as any || 'Usado');
-                this.bedrooms.set(data.bedrooms || 0);
+                this.propertyState.set(data.propertyState as any || 'USED');
+                this.bedrooms.set(data.bedrooms || 2); // Mantém padrão se não houver dado
                 this.bathrooms.set(data.bathrooms || 1);
                 this.usefulArea.set(data.area || 0);
             }

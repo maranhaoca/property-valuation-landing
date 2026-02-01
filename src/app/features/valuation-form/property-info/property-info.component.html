@@ -9,22 +9,34 @@
         <div>
             <label class="block text-sm font-semibold text-gray-500 uppercase tracking-wider mb-4">Finalidade</label>
             <div class="flex flex-wrap gap-4">
-                @for (item of ['Vender', 'Arrendar']; track item) {
-                    <label class="flex items-center px-6 py-3 border-2 rounded-xl cursor-pointer transition-none group"
-                           [class.border-era-red]="purpose() === item"
-                            [class.border-gray-100]="purpose() !== item">
-                    <input type="radio" name="purpose" class="hidden" [value]="item" [checked]="purpose() === item"
-                           (change)="purpose.set($any(item))"/>
+                <label class="flex items-center px-6 py-3 border-2 rounded-xl cursor-pointer transition-none group"
+                       [class.border-era-red]="purpose() === 'SELL'"
+                       [class.border-gray-100]="purpose() !== 'SELL'">
+                    <input type="radio" name="purpose" class="hidden" value="SELL" [checked]="purpose() === 'SELL'"
+                           (change)="purpose.set('SELL')"/>
                     <span class="w-5 h-5 border-2 rounded-full flex items-center justify-center mr-3 transition-none"
-                          [class.border-era-red]="purpose() === item"
-                          [class.border-gray-300]="purpose() !== item">
-                        @if (purpose() === item) {
+                          [class.border-era-red]="purpose() === 'SELL'"
+                          [class.border-gray-300]="purpose() !== 'SELL'">
+                        @if (purpose() === 'SELL') {
                             <span class="w-2.5 h-2.5 bg-era-red rounded-full"></span>
                         }
                     </span>
-                    <span class="font-medium text-gray-700">{{ item }}</span>
-                    </label>
-                }
+                    <span class="font-medium text-gray-700">Vender</span>
+                </label>
+                <label class="flex items-center px-6 py-3 border-2 rounded-xl cursor-pointer transition-none group"
+                       [class.border-era-red]="purpose() === 'RENT'"
+                       [class.border-gray-100]="purpose() !== 'RENT'">
+                    <input type="radio" name="purpose" class="hidden" value="RENT" [checked]="purpose() === 'RENT'"
+                           (change)="purpose.set('RENT')"/>
+                    <span class="w-5 h-5 border-2 rounded-full flex items-center justify-center mr-3 transition-none"
+                          [class.border-era-red]="purpose() === 'RENT'"
+                          [class.border-gray-300]="purpose() !== 'RENT'">
+                        @if (purpose() === 'RENT') {
+                            <span class="w-2.5 h-2.5 bg-era-red rounded-full"></span>
+                        }
+                    </span>
+                    <span class="font-medium text-gray-700">Arrendar</span>
+                </label>
             </div>
         </div>
 

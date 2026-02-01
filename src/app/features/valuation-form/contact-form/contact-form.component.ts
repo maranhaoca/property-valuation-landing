@@ -3,15 +3,15 @@ import { ChangeDetectionStrategy, Component, output, signal, effect, input } fro
 import { CommonModule } from '@angular/common';
 import {RouterLink} from "@angular/router";
 import {PropertyValuation} from "../../../shared/models/property-valuation.model";
-import {PhonePipe} from "@/src/app/shared/pipes/phone-format.pipe";
+import {PhonePipe} from "../../../shared/pipes/phone-format.pipe";
 
 @Component({
-  selector: 'app-step-3',
-  templateUrl: './step-3.component.html',
+  selector: 'app-contact-form',
+  templateUrl: './contact-form.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [CommonModule, RouterLink, PhonePipe]
 })
-export class Step3Component {
+export class ContactFormComponent {
   initialData = input<Partial<PropertyValuation>>();
   nextStep = output<Partial<PropertyValuation>>();
   previousStep = output<void>();

@@ -1,0 +1,94 @@
+<div class="bg-white p-8 md:p-12 rounded-2xl shadow-xl border border-gray-50 animate-fade-in max-w-3xl mx-auto">
+    <header class="mb-10">
+        <h2 class="text-3xl font-light text-gray-800 tracking-tight mb-2">Estimativa de Preço</h2>
+        <div class="h-1 w-20 bg-era-red rounded-full"></div>
+    </header>
+
+    @if (isLoading()) {
+        <!-- Loading State -->
+        <div class="flex flex-col items-center justify-center py-16">
+            <div class="animate-spin rounded-full h-16 w-16 border-b-4 border-era-red mb-6"></div>
+            <p class="text-gray-600 text-lg">A calcular a estimativa do seu imóvel...</p>
+        </div>
+    } @else if (error()) {
+        <!-- Error State -->
+        <div class="bg-red-50 border border-red-200 rounded-xl p-6 mb-8">
+            <div class="flex items-start">
+                <svg class="h-6 w-6 text-red-600 mr-3 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+                <div>
+                    <h3 class="text-red-800 font-semibold mb-1">Erro ao obter estimativa</h3>
+                    <p class="text-red-700">{{ error() }}</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="flex gap-4 justify-between">
+            <button type="button"
+                    (click)="previousStep.emit()"
+                    class="text-black font-bold py-4 px-8 rounded-xl border border-b-era-gray-dark hover:bg-red-50 transition-colors duration-300">
+                Anterior
+            </button>
+        </div>
+    } @else {
+        <!-- Success State - Show Estimation -->
+        <div class="space-y-8">
+            <!-- Price Range Display -->
+            <div class="bg-gradient-to-br from-era-red to-red-600 rounded-2xl p-8 text-white text-center">
+                <p class="text-sm uppercase tracking-wider mb-3 opacity-90">Estimativa do seu imóvel</p>
+                <div class="text-5xl font-bold mb-2">
+                    {{ formatPrice(minPrice()) }} - {{ formatPrice(maxPrice()) }}
+                </div>
+                <p class="text-sm opacity-80 mt-4">
+                    Esta é uma estimativa baseada nas características do imóvel fornecidas
+                </p>
+            </div>
+
+            <!-- Info Box -->
+            <div class="bg-blue-50 border border-blue-200 rounded-xl p-6">
+                <div class="flex items-start">
+                    <svg class="h-6 w-6 text-blue-600 mr-3 flex-shrink-0 mt-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                    <div>
+                        <h3 class="text-blue-900 font-semibold mb-2">Esta é uma estimativa automática</h3>
+                        <p class="text-blue-800 leading-relaxed">
+                            Um dos nossos especialistas pode realizar uma avaliação profissional e presencial do seu imóvel,
+                            considerando fatores como localização exata, estado de conservação, acabamentos e mercado local.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- CTA Question -->
+            <div class="border-t border-gray-200 pt-8">
+                <h3 class="text-2xl font-semibold text-gray-800 mb-6 text-center">
+                    Deseja ser contactado para uma avaliação profissional gratuita?
+                </h3>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <button type="button"
+                            (click)="onAcceptContact()"
+                            class="bg-era-red text-white font-bold py-5 px-8 rounded-xl border-none hover:bg-red-700 transition-colors duration-300 text-lg">
+                        Sim, quero ser contactado
+                    </button>
+                    <button type="button"
+                            (click)="onRequestNewEstimation()"
+                            class="bg-white text-gray-700 font-bold py-5 px-8 rounded-xl border-2 border-gray-300 hover:bg-gray-50 transition-colors duration-300 text-lg">
+                        Nova Estimativa
+                    </button>
+                </div>
+            </div>
+
+            <!-- Back Button -->
+            <div class="flex justify-center pt-4">
+                <button type="button"
+                        (click)="previousStep.emit()"
+                        class="text-gray-600 font-medium py-2 px-6 rounded-lg hover:bg-gray-100 transition-colors duration-300">
+                    ← Voltar e editar informações
+                </button>
+            </div>
+        </div>
+    }
+</div>

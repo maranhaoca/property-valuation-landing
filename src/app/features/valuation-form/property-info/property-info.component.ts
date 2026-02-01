@@ -4,16 +4,16 @@ import { CommonModule } from '@angular/common';
 import {PropertyValuation} from "../../../shared/models/property-valuation.model";
 
 @Component({
-  selector: 'app-step-1',
-  templateUrl: './step-1.component.html',
+  selector: 'app-property-info',
+  templateUrl: './property-info.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [CommonModule]
 })
-export class Step1Component {
+export class PropertyInfoComponent {
   initialData = input<Partial<PropertyValuation>>();
   nextStep = output<Partial<PropertyValuation>>();
 
-  purpose = signal<'Vender' | 'Arrendar'>('Vender');
+  purpose = signal<'SELL' | 'RENT'>('SELL');
   propertyType = signal('Apartamento');
   location = signal('');
   submitted = signal(false);

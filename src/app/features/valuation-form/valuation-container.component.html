@@ -6,30 +6,62 @@
             <p class="text-gray-500 text-lg">Receba uma avaliação gratuita do seu imóvel.</p>
         </header>
 
-        <app-stepper [currentStep]="currentStep()"></app-stepper>
+        <app-stepper
+            [currentStep]="currentStep()"
+            [estimationFlowEnabled]="estimationFlowEnabled()"></app-stepper>
 
         <main class="mt-12">
             @switch (currentStep()) {
                 @case (1) {
-                    <app-step-1
+                    <!-- Step 1: Informações da Propriedade -->
+                    <app-property-info
                             [initialData]="valuationData()"
-                            (nextStep)="handleNextStep($event)"></app-step-1>
+                            (nextStep)="handleNextStep($event)"></app-property-info>
                 }
                 @case (2) {
-                    <app-step-2
+                    <!-- Step 2: Detalhes da Propriedade -->
+                    <app-property-details
                             [initialData]="valuationData()"
                             (nextStep)="handleNextStep($event)"
-                            (previousStep)="handlePreviousStep()"></app-step-2>
+                            (previousStep)="handlePreviousStep()"></app-property-details>
                 }
                 @case (3) {
-                    <app-step-3
-                            [initialData]="valuationData()"
-                            (nextStep)="handleNextStep($event)"
-                            (previousStep)="handlePreviousStep()"></app-step-3>
+                    @if (estimationFlowEnabled()) {
+                        <!-- Fluxo com Estimativa: Step 3 = Price Estimation -->
+                        <app-price-estimation
+                                [initialData]="valuationData()"
+                                (nextStep)="handleEstimationResponse($event)"
+                                (requestNewEstimation)="handleRequestNewEstimation()"
+                                (previousStep)="handlePreviousStep()"></app-price-estimation>
+                    } @else {
+                        <!-- Fluxo Direto: Step 3 = Contact Form -->
+                        <app-contact-form
+                                [initialData]="valuationData()"
+                                (nextStep)="handleNextStep($event)"
+                                (previousStep)="handlePreviousStep()"></app-contact-form>
+                    }
                 }
                 @case (4) {
-                    <app-step-4 [valuationData]="valuationData()" (previousStep)="handlePreviousStep()" (restart)="restart()"/>
-
+                    @if (estimationFlowEnabled()) {
+                        <!-- Fluxo com Estimativa: Step 4 = Contact Form -->
+                        <app-contact-form
+                                [initialData]="valuationData()"
+                                (nextStep)="handleNextStep($event)"
+                                (previousStep)="handlePreviousStep()"></app-contact-form>
+                    } @else {
+                        <!-- Fluxo Direto: Step 4 = Confirmation -->
+                        <app-confirmation
+                                [success]="submissionSuccess()"
+                                [error]="submissionError()"
+                                (restart)="restart()"></app-confirmation>
+                    }
+                }
+                @case (5) {
+                    <!-- Fluxo com Estimativa: Step 5 = Confirmation -->
+                    <app-confirmation
+                            [success]="submissionSuccess()"
+                            [error]="submissionError()"
+                            (restart)="restart()"></app-confirmation>
                 }
             }
         </main>

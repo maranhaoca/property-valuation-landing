@@ -1,12 +1,12 @@
 
 export interface PropertyValuation {
   // Step 1
-  purpose: 'Vender' | 'Arrendar';
+  purpose: 'SELL' | 'RENT';
   propertyType: string;
   zipCode: string;
 
   // Step 2
-  propertyState: 'Novo' | 'Usado' | 'Renovado' | 'Construção';
+  propertyState: 'NEW' | 'USED' | 'RENOVATED' | 'UNDER_CONSTRUCTION';
   bedrooms: number;
   bathrooms: number;
   area: number;

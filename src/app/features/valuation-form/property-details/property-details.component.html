@@ -10,20 +10,20 @@
             <label class="block text-sm font-semibold text-gray-500 uppercase tracking-wider mb-4">Estado do
                 Imóvel</label>
             <div class="flex flex-wrap gap-3">
-                @for (item of ['Novo', 'Usado', 'Renovado', 'Em Construção']; track item) {
+                @for (item of stateOptions; track item.value) {
                     <label class="flex items-center px-5 py-3 border-2 rounded-xl cursor-pointer group"
-                           [class.border-era-red]="propertyState() === item"
-                           [class.border-gray-100]="propertyState() !== item">
-                        <input type="radio" name="propertyState" class="hidden" [value]="item"
-                               [checked]="propertyState() === item" (change)="propertyState.set($any(item))"/>
+                           [class.border-era-red]="propertyState() === item.value"
+                           [class.border-gray-100]="propertyState() !== item.value">
+                        <input type="radio" name="propertyState" class="hidden" [value]="item.value"
+                               [checked]="propertyState() === item.value" (change)="propertyState.set(item.value)"/>
                         <span class="w-4 h-4 border-2 rounded-full flex items-center justify-center mr-3"
-                              [class.border-era-red]="propertyState() === item"
-                              [class.border-gray-300]="propertyState() !== item">
-              @if (propertyState() === item) {
+                              [class.border-era-red]="propertyState() === item.value"
+                              [class.border-gray-300]="propertyState() !== item.value">
+              @if (propertyState() === item.value) {
                   <span class="w-2 h-2 bg-era-red rounded-full"></span>
               }
             </span>
-                        <span class="text-sm font-medium text-gray-700">{{ item }}</span>
+                        <span class="text-sm font-medium text-gray-700">{{ item.label }}</span>
                     </label>
                 }
             </div>

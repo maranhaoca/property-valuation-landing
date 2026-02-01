@@ -2,10 +2,10 @@ import {APP_INITIALIZER, ApplicationConfig, provideZonelessChangeDetection} from
 import { provideHttpClient } from '@angular/common/http';
 import { provideRouter } from '@angular/router';
 import { routes } from './app.routes';
-import {AgentService} from "./app/core/services/agent.service";
+import {AppConfigService} from "./app/core/services/app-config.service";
 
-export function initializeApp(agentService: AgentService) {
-    return () => agentService.loadConfig();
+export function initializeApp(appConfigService: AppConfigService) {
+    return () => appConfigService.loadConfig();
 }
 
 export const appConfig: ApplicationConfig = {
@@ -16,8 +16,9 @@ export const appConfig: ApplicationConfig = {
         {
             provide: APP_INITIALIZER,
             useFactory: initializeApp,
-            deps: [AgentService],
+            deps: [AppConfigService],
             multi: true
         }
     ]
 };
+
