@@ -23,20 +23,6 @@
                     </span>
                     <span class="font-medium text-gray-700">Vender</span>
                 </label>
-                <label class="flex items-center px-6 py-3 border-2 rounded-xl cursor-pointer transition-none group"
-                       [class.border-era-red]="purpose() === 'RENT'"
-                       [class.border-gray-100]="purpose() !== 'RENT'">
-                    <input type="radio" name="purpose" class="hidden" value="RENT" [checked]="purpose() === 'RENT'"
-                           (change)="purpose.set('RENT')"/>
-                    <span class="w-5 h-5 border-2 rounded-full flex items-center justify-center mr-3 transition-none"
-                          [class.border-era-red]="purpose() === 'RENT'"
-                          [class.border-gray-300]="purpose() !== 'RENT'">
-                        @if (purpose() === 'RENT') {
-                            <span class="w-2.5 h-2.5 bg-era-red rounded-full"></span>
-                        }
-                    </span>
-                    <span class="font-medium text-gray-700">Arrendar</span>
-                </label>
             </div>
         </div>
 
@@ -51,8 +37,6 @@
                         (change)="propertyType.set($any($event.target).value)">
                     <option value="Apartamento" [selected]="propertyType() === 'Apartamento'">Apartamento</option>
                     <option value="Moradia" [selected]="propertyType() === 'Moradia'">Moradia</option>
-                    <option value="Terreno" [selected]="propertyType() === 'Terreno'">Terreno</option>
-                    <option value="Loja" [selected]="propertyType() === 'Loja'">Loja</option>
                 </select>
             </div>
 

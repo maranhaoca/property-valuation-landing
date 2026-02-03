@@ -17,8 +17,6 @@ export class PropertyDetailsComponent {
     stateOptions = [
         { value: 'NEW' as const, label: 'Novo' },
         { value: 'USED' as const, label: 'Usado' },
-        { value: 'RENOVATED' as const, label: 'Renovado' },
-        { value: 'UNDER_CONSTRUCTION' as const, label: 'Em Construção' }
     ];
 
     propertyState = signal<'NEW' | 'USED' | 'RENOVATED' | 'UNDER_CONSTRUCTION'>('USED'); // Padrão: Usado
