@@ -45,7 +45,7 @@ export class AppConfigService {
     }
 
     if (config.settings.branding.secondaryColor) {
-      root.style.setProperty('--color-era-gray-dark', config.settings.branding.secondaryColor);
+      root.style.setProperty('--color-gray-dark', config.settings.branding.secondaryColor);
     }
   }
 }

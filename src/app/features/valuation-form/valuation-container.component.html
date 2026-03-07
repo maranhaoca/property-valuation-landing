@@ -25,6 +25,7 @@
             <app-price-estimation
                     [initialData]="valuationData()"
                     (nextStep)="handleEstimationResponse($event)"
+                    (requestNewEstimation)="restart()"
                     (previousStep)="handlePreviousStep()"></app-price-estimation>
         }
         @case (4) {
@@ -39,9 +40,7 @@
             <app-confirmation
                     [success]="submissionSuccess()"
                     [error]="submissionError()"
-                    [contactData]="submissionSuccess() ? { name: valuationData().name ?? '', email: valuationData().email ?? '', phone: valuationData().phone ?? '', allowContact: !!valuationData().privacyPolicy } : null"
-                    (restart)="restart()"
-                    (requestProfessionalValuation)="handleRequestProfessionalValuation()"></app-confirmation>
+                    (restart)="restart()"></app-confirmation>
         }
     }
   </section>

@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, output, signal, effect, input, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, output, signal, effect, input, inject, DestroyRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { PropertyValuation } from "../../../shared/models/property-valuation.model";
 import { EstimationService } from "../../../core/services/estimation.service";
@@ -16,6 +16,11 @@ export class PriceEstimationComponent {
   previousStep = output<void>();
 
   private valuationService = inject(EstimationService);
+  private destroyRef = inject(DestroyRef);
+
+  /** AbortController para cancelar chamadas anteriores (evita race conditions). */
+  private abortController: AbortController | null = null;
+  private destroyed = false;
 
   isLoading = signal(true);
   error = signal('');
@@ -24,15 +29,23 @@ export class PriceEstimationComponent {
   estimativeId = signal<string | undefined>(undefined); // Guardar ID da estimativa
 
   constructor() {
+    this.destroyRef.onDestroy(() => {
+      this.destroyed = true;
+      this.abortController?.abort();
+    });
+
     effect(() => {
       const data = this.initialData();
       if (data) {
-        this.fetchEstimation(data);
+        // Cancela chamada anterior antes de iniciar nova
+        this.abortController?.abort();
+        this.abortController = new AbortController();
+        this.fetchEstimation(data, this.abortController.signal);
       }
     });
   }
 
-  async fetchEstimation(data: Partial<PropertyValuation>): Promise<void> {
+  async fetchEstimation(data: Partial<PropertyValuation>, signal?: AbortSignal): Promise<void> {
     this.isLoading.set(true);
     this.error.set('');
 
@@ -49,7 +62,12 @@ export class PriceEstimationComponent {
         purpose: data.purpose || 'SELL'
       });
 
-      await this.minimalTimeLoading(startLoadTime);
+      // Se foi abortado ou componente destruído, ignorar resposta
+      if (signal?.aborted || this.destroyed) return;
+
+      await this.minimalTimeLoading(startLoadTime, signal);
+
+      if (signal?.aborted || this.destroyed) return;
 
       this.minPrice.set(response.min);
       this.maxPrice.set(response.max);
@@ -60,21 +78,28 @@ export class PriceEstimationComponent {
       }
 
     } catch (err: any) {
+      if (signal?.aborted || this.destroyed) return;
       console.error('Error fetching estimation:', err);
       this.error.set('Não foi possível obter a estimativa. Por favor, tente novamente.');
     } finally {
-      this.isLoading.set(false);
+      if (!signal?.aborted && !this.destroyed) {
+        this.isLoading.set(false);
+      }
     }
   }
 
-  private async minimalTimeLoading(startTime: number) {
+  private async minimalTimeLoading(startTime: number, signal?: AbortSignal): Promise<void> {
     const elapsed = Date.now() - startTime;
-    const minLoadingTime = 1500;
-    const remainingTime = Math.max(0, minLoadingTime - elapsed);
+    const remaining = Math.max(0, 1500 - elapsed);
+    if (remaining <= 0) return;
 
-    if (remainingTime > 0) {
-      await new Promise(resolve => setTimeout(resolve, remainingTime));
-    }
+    await new Promise<void>((resolve, reject) => {
+      const timer = setTimeout(resolve, remaining);
+      signal?.addEventListener('abort', () => {
+        clearTimeout(timer);
+        reject(new DOMException('Aborted', 'AbortError'));
+      });
+    });
   }
 
   onAcceptContact(): void {

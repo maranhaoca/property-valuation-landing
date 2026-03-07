@@ -7,16 +7,16 @@
         [class.text-white]="currentStep() >= step.id"
         [class.border-2]="currentStep() < step.id"
         [class.border-primary]="currentStep() === step.id"
-        [class.border-era-gray-medium]="currentStep() < step.id"
+        [class.border-gray-medium]="currentStep() < step.id"
         [class.text-primary]="currentStep() === step.id"
-        [class.text-era-gray-dark]="currentStep() < step.id"
+        [class.text-gray-dark]="currentStep() < step.id"
         [attr.aria-label]="'Passo ' + step.id + ': ' + step.label">
         {{ step.id }}
       </div>
       <p
         class="mt-2 text-xs sm:text-sm font-medium transition-colors duration-300 min-h-10 flex items-start justify-center text-center px-1"
         [class.text-primary]="currentStep() >= step.id"
-        [class.text-era-gray-dark]="currentStep() < step.id">
+        [class.text-gray-dark]="currentStep() < step.id">
         {{ step.label }}
       </p>
     </div>
@@ -26,7 +26,7 @@
         aria-hidden="true"
         class="flex-1 border-t-2 mt-5 transition-colors duration-300"
         [class.border-primary]="currentStep() > step.id"
-        [class.border-era-gray-medium]="currentStep() <= step.id">
+        [class.border-gray-medium]="currentStep() <= step.id">
       </div>
     }
   }

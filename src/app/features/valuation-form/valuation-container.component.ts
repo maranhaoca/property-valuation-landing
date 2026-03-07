@@ -1,5 +1,4 @@
 import { ChangeDetectionStrategy, Component, signal, inject, input, effect, computed, ElementRef } from '@angular/core';
-import { CommonModule } from '@angular/common';
 import { StepperComponent } from '../../shared/components/stepper/stepper.component';
 import { PropertyInfoComponent } from './property-info/property-info.component';
 import { PropertyDetailsComponent } from './property-details/property-details.component';
@@ -7,13 +6,19 @@ import { ContactFormComponent } from './contact-form/contact-form.component';
 import { PriceEstimationComponent } from './price-estimation/price-estimation.component';
 import { ConfirmationComponent } from './confirmation/confirmation.component';
 import { PropertyValuation } from '../../shared/models/property-valuation.model';
-import { ProfessionalValuationRequest } from '../../shared/models/professional-valuation-request.interface';
 import { EstimationService } from '../../core/services/estimation.service';
+
+interface SubmissionState {
+    isSubmitting: boolean;
+    success: boolean;
+    error: string | null;
+}
+
+const initialSubmissionState = (): SubmissionState => ({ isSubmitting: false, success: false, error: null });
 
 @Component({
     selector: 'app-valuation-container',
     imports: [
-        CommonModule,
         StepperComponent,
         PropertyInfoComponent,
         PropertyDetailsComponent,
@@ -27,112 +32,76 @@ import { EstimationService } from '../../core/services/estimation.service';
 export class ValuationContainerComponent {
     private valuationService = inject(EstimationService);
     private el = inject(ElementRef);
-    private isInitialized = false;
 
-    /** Scrolls this component into view smoothly, offsetting the fixed header. */
-    private scrollToForm(): void {
-        if (!this.isInitialized) return;
-        this.scrollToTop();
-    }
-
-    /** Public method for parent components to trigger scroll. */
     scrollToTop(): void {
-        const headerOffset = 72; // fixed header height + small gap
+        const headerOffset = 72;
         const top = this.el.nativeElement.getBoundingClientRect().top + window.scrollY - headerOffset;
         window.scrollTo({ top, behavior: 'smooth' });
     }
 
-    /** When true the form skips directly to the contact step (step 4). */
     startAtContactStep = input<boolean>(false);
-
     currentStep = signal(1);
-
-    /** Hides the stepper when the user skips directly to the contact step. */
     showStepper = computed(() => !this.startAtContactStep() || this.currentStep() === 5);
+
+    valuationData = signal<Partial<PropertyValuation>>({});
+    estimativeId = signal<string | undefined>(undefined);
+    submission = signal<SubmissionState>(initialSubmissionState());
+
+    // Computed accessors used in template
+    readonly submissionSuccess = computed(() => this.submission().success);
+    readonly submissionError = computed(() => this.submission().error);
 
     constructor() {
         effect(() => {
             if (this.startAtContactStep()) {
                 this.valuationData.set({});
-                this.wantsContact.set(true);
                 this.estimativeId.set(undefined);
-                this.submissionSuccess.set(false);
-                this.submissionError.set(null);
+                this.submission.set(initialSubmissionState());
                 this.currentStep.set(4);
             } else {
-                this.restart();
+                this.valuationData.set({});
+                this.estimativeId.set(undefined);
+                this.submission.set(initialSubmissionState());
+                this.currentStep.set(1);
             }
-            this.isInitialized = true;
         });
     }
-    valuationData = signal<Partial<PropertyValuation>>({});
-    wantsContact = signal(false);
-    estimativeId = signal<string | undefined>(undefined);
 
-    isSubmitting = signal(false);
-    submissionSuccess = signal(false);
-    submissionError = signal<string | null>(null);
-
-    /** Signals for the professional valuation CTA on the confirmation screen. */
-    isProfessionalSubmitting = signal(false);
-    professionalSuccess = signal(false);
-    professionalError = signal<string | null>(null);
-
-    /**
-     * Avança o fluxo com os dados do step actual.
-     * Fluxo fixo: 1 (info) → 2 (detalhes) → 3 (estimativa) → 4 (contacto) → 5 (confirmação)
-     */
     handleNextStep(data: Partial<PropertyValuation>): void {
         this.valuationData.update(current => ({ ...current, ...data }));
-
-        const current = this.currentStep();
-
-        if (current === 4) {
+        if (this.currentStep() === 4) {
             this.submitToBackend();
-        } else if (current < 5) {
+        } else if (this.currentStep() < 5) {
             this.currentStep.update(s => s + 1);
+            this.scrollToTop();
         }
-
-        this.scrollToForm();
     }
 
-    /**
-     * Trata a resposta do step de estimativa.
-     * Se aceita contacto → step 4; caso contrário → step 5 (confirmação sem submissão).
-     */
     handleEstimationResponse(response: { wantsContact: boolean; estimativeId?: string }): void {
-        this.wantsContact.set(response.wantsContact);
-
         if (response.estimativeId) {
             this.estimativeId.set(response.estimativeId);
         }
-
         if (response.wantsContact) {
             this.currentStep.set(4);
         } else {
-            this.submissionSuccess.set(true);
+            // Utilizador recusou contacto — fluxo termina sem submissão
             this.currentStep.set(5);
         }
-
-        this.scrollToForm();
+        this.scrollToTop();
     }
 
     handlePreviousStep(): void {
         if (this.currentStep() > 1) {
             this.currentStep.update(step => step - 1);
+            this.scrollToTop();
         }
-        this.scrollToForm();
     }
 
     async submitToBackend(): Promise<void> {
-        this.isSubmitting.set(true);
-        this.submissionError.set(null);
-        this.submissionSuccess.set(false);
-
+        this.submission.set({ isSubmitting: true, success: false, error: null });
         try {
             const payload = this.valuationData() as PropertyValuation;
             const estimId = this.estimativeId();
-
             if (estimId) {
                 await this.valuationService.submitValuationFromEstimate(estimId, {
                     name: payload.name,
@@ -143,59 +112,21 @@ export class ValuationContainerComponent {
             } else {
                 await this.valuationService.submitValuation(payload);
             }
-
-            this.submissionSuccess.set(true);
+            this.submission.set({ isSubmitting: false, success: true, error: null });
             this.currentStep.set(5);
         } catch (err) {
             console.error('Submission error:', err);
-            this.submissionError.set('Erro ao enviar pedido. Tente novamente mais tarde.');
-            this.currentStep.set(5);
-        } finally {
-            this.isSubmitting.set(false);
+            this.submission.set({ isSubmitting: false, success: false, error: 'Erro ao enviar pedido. Tente novamente mais tarde.' });
+            // Permanece no step 4 para permitir nova tentativa
         }
+        this.scrollToTop();
     }
 
     restart(): void {
         this.valuationData.set({});
-        this.wantsContact.set(false);
         this.estimativeId.set(undefined);
-        this.isSubmitting.set(false);
-        this.submissionSuccess.set(false);
-        this.submissionError.set(null);
-        this.isProfessionalSubmitting.set(false);
-        this.professionalSuccess.set(false);
-        this.professionalError.set(null);
+        this.submission.set(initialSubmissionState());
         this.currentStep.set(1);
-        this.scrollToForm();
-    }
-
-    /**
-     * Handles the requestProfessionalValuation output from ConfirmationComponent.
-     * Builds a ProfessionalValuationRequest from already-collected valuationData
-     * and submits it to the backend without requiring the user to re-enter contact data.
-     */
-    async handleRequestProfessionalValuation(): Promise<void> {
-        const data = this.valuationData() as PropertyValuation;
-
-        const request: ProfessionalValuationRequest = {
-            name: data.name,
-            email: data.email,
-            phone: data.phone,
-            allowContact: !!data.privacyPolicy,
-        };
-
-        this.isProfessionalSubmitting.set(true);
-        this.professionalSuccess.set(false);
-        this.professionalError.set(null);
-
-        try {
-            await this.valuationService.submitProfessionalValuationRequest(request);
-            this.professionalSuccess.set(true);
-        } catch (err) {
-            console.error('ValuationContainerComponent: professional valuation error', err);
-            this.professionalError.set('Erro ao submeter pedido de avaliação profissional. Tente novamente.');
-        } finally {
-            this.isProfessionalSubmitting.set(false);
-        }
+        this.scrollToTop();
     }
 }
