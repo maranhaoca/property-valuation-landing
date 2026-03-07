@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, signal, inject, input, effect, computed } from '@angular/core';
+import { ChangeDetectionStrategy, Component, signal, inject, input, effect, computed, ElementRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { StepperComponent } from '../../shared/components/stepper/stepper.component';
 import { PropertyInfoComponent } from './property-info/property-info.component';
@@ -26,6 +26,14 @@ import { EstimationService } from '../../core/services/estimation.service';
 })
 export class ValuationContainerComponent {
     private valuationService = inject(EstimationService);
+    private el = inject(ElementRef);
+    private isInitialized = false;
+
+    /** Scrolls this component into view smoothly. */
+    private scrollToForm(): void {
+        if (!this.isInitialized) return;
+        this.el.nativeElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
 
     /** When true the form skips directly to the contact step (step 4). */
     startAtContactStep = input<boolean>(false);
@@ -47,6 +55,7 @@ export class ValuationContainerComponent {
             } else {
                 this.restart();
             }
+            this.isInitialized = true;
         });
     }
     valuationData = signal<Partial<PropertyValuation>>({});
@@ -77,7 +86,7 @@ export class ValuationContainerComponent {
             this.currentStep.update(s => s + 1);
         }
 
-        window.scrollTo({ top: 0, behavior: 'smooth' });
+        this.scrollToForm();
     }
 
     /**
@@ -98,13 +107,14 @@ export class ValuationContainerComponent {
             this.currentStep.set(5);
         }
 
-        window.scrollTo({ top: 0, behavior: 'smooth' });
+        this.scrollToForm();
     }
 
     handlePreviousStep(): void {
         if (this.currentStep() > 1) {
             this.currentStep.update(step => step - 1);
         }
+        this.scrollToForm();
     }
 
     async submitToBackend(): Promise<void> {
@@ -149,7 +159,7 @@ export class ValuationContainerComponent {
         this.professionalSuccess.set(false);
         this.professionalError.set(null);
         this.currentStep.set(1);
-        window.scrollTo({ top: 0, behavior: 'smooth' });
+        this.scrollToForm();
     }
 
     /**
