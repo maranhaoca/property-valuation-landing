@@ -29,10 +29,17 @@ export class ValuationContainerComponent {
     private el = inject(ElementRef);
     private isInitialized = false;
 
-    /** Scrolls this component into view smoothly. */
+    /** Scrolls this component into view smoothly, offsetting the fixed header. */
     private scrollToForm(): void {
         if (!this.isInitialized) return;
-        this.el.nativeElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        this.scrollToTop();
+    }
+
+    /** Public method for parent components to trigger scroll. */
+    scrollToTop(): void {
+        const headerOffset = 72; // fixed header height + small gap
+        const top = this.el.nativeElement.getBoundingClientRect().top + window.scrollY - headerOffset;
+        window.scrollTo({ top, behavior: 'smooth' });
     }
 
     /** When true the form skips directly to the contact step (step 4). */
