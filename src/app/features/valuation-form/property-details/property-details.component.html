@@ -1,7 +1,7 @@
-<div class="bg-white p-8 md:p-12 rounded-2xl shadow-xl border border-gray-50 animate-fade-in max-w-3xl mx-auto">
+<div class="bg-white p-8 md:p-12 rounded-2xl shadow-xl border border-gray-50 animate-fade-in w-full">
     <header class="mb-10">
         <h2 class="text-3xl font-light text-gray-800 tracking-tight mb-2">Detalhes do seu imóvel</h2>
-        <div class="h-1 w-20 bg-era-red rounded-full"></div>
+        <div class="h-1 w-20 bg-primary rounded-full"></div>
     </header>
 
     <form (submit)="$event.preventDefault(); onNext()" class="space-y-10">
@@ -12,15 +12,15 @@
             <div class="flex flex-wrap gap-3">
                 @for (item of stateOptions; track item.value) {
                     <label class="flex items-center px-5 py-3 border-2 rounded-xl cursor-pointer group"
-                           [class.border-era-red]="propertyState() === item.value"
+                           [class.border-primary]="propertyState() === item.value"
                            [class.border-gray-100]="propertyState() !== item.value">
                         <input type="radio" name="propertyState" class="hidden" [value]="item.value"
                                [checked]="propertyState() === item.value" (change)="propertyState.set(item.value)"/>
                         <span class="w-4 h-4 border-2 rounded-full flex items-center justify-center mr-3"
-                              [class.border-era-red]="propertyState() === item.value"
+                              [class.border-primary]="propertyState() === item.value"
                               [class.border-gray-300]="propertyState() !== item.value">
               @if (propertyState() === item.value) {
-                  <span class="w-2 h-2 bg-era-red rounded-full"></span>
+                  <span class="w-2 h-2 bg-primary rounded-full"></span>
               }
             </span>
                         <span class="text-sm font-medium text-gray-700">{{ item.label }}</span>
@@ -33,7 +33,7 @@
             <div>
                 <label for="bedrooms" class="block text-sm font-semibold text-gray-500 uppercase tracking-wider mb-2">Quartos</label>
                 <select id="bedrooms"
-                        class="block w-full px-4 py-3 bg-gray-50 border border-gray-100 rounded-xl focus:ring-2 focus:ring-era-red focus:border-era-red appearance-none"
+                        class="block w-full px-4 py-3 bg-gray-50 border border-gray-100 rounded-xl focus:ring-2 focus:ring-primary focus:border-primary appearance-none"
                         (change)="bedrooms.set(+$any($event.target).value)">
                     @for (i of [0, 1, 2, 3, 4, 5]; track i) {
                         <option [value]="i" [selected]="bedrooms() === i">{{ i }}
@@ -46,7 +46,7 @@
                 <label for="bathrooms" class="block text-sm font-semibold text-gray-500 uppercase tracking-wider mb-2">Casa
                     de Banho</label>
                 <select id="bathrooms"
-                        class="block w-full px-4 py-3 bg-gray-50 border border-gray-100 rounded-xl focus:ring-2 focus:ring-era-red focus:border-era-red appearance-none"
+                        class="block w-full px-4 py-3 bg-gray-50 border border-gray-100 rounded-xl focus:ring-2 focus:ring-primary focus:border-primary appearance-none"
                         (change)="bathrooms.set(+$any($event.target).value)">
                     @for (i of [1, 2, 3, 4, 5]; track i) {
                         <option [value]="i" [selected]="bathrooms() === i">{{ i }}</option>
@@ -58,7 +58,7 @@
                 <label for="usefulArea" class="block text-sm font-semibold text-gray-500 uppercase tracking-wider mb-2">Área</label>
                 <div class="relative">
                     <input type="number" id="usefulArea"
-                           class="block w-full px-4 py-3 bg-gray-50 border border-gray-100 rounded-xl focus:ring-2 focus:ring-era-red focus:border-era-red"
+                           class="block w-full px-4 py-3 bg-gray-50 border border-gray-100 rounded-xl focus:ring-2 focus:ring-primary focus:border-primary"
                            [class.border-red-500]="submitted() && usefulArea() <= 0"
                            placeholder="0"
                            [value]="usefulArea() || ''"
@@ -71,15 +71,8 @@
             </div>
         </div>
 
-        <div class="pt-10 flex justify-between items-center border-t border-gray-50">
-            <button type="button" (click)="previousStep.emit()"
-                    class="text-black font-bold py-4 px-8 rounded-xl border border-b-era-gray-dark hover:bg-red-50 transition-colors duration-300">
-                Anterior
-            </button>
-            <button type="submit"
-                    class="bg-era-red text-white font-bold py-4 px-12 rounded-xl block border-none opacity-100">
-                Seguinte
-            </button>
-        </div>
+        <app-form-navigation
+            (previousClick)="previousStep.emit()">
+        </app-form-navigation>
     </form>
 </div>

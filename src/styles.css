@@ -1,7 +1,9 @@
 @import "tailwindcss/index.css";
 
 @theme {
-    --color-era-red: #5706e3;
+    --font-sans: 'DM Sans', system-ui, sans-serif;
+    --default-font-family: var(--font-sans);
+    --color-primary: #5706e3;
     --color-era-gray-medium: #9CA3AF;
     --color-era-gray-dark: #374151;
 }

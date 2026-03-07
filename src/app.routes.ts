@@ -1,9 +1,24 @@
-import {Routes} from "@angular/router";
-import {PrivacyPolicyComponent} from "@/src/app/features/privacy-policy/privacy-policy";
-import {ValuationContainerComponent} from "@/src/app/features/valuation-form/valuation-container.component";
+import { Routes } from '@angular/router';
 
 export const routes: Routes = [
-    { path: '', component: ValuationContainerComponent },
-    { path: 'privacidade', component: PrivacyPolicyComponent },
-    { path: '**', redirectTo: '' }
+  {
+    path: '',
+    loadComponent: () => import('./app/features/home-page/home-page.component').then(m => m.HomePageComponent),
+  },
+  {
+    path: 'valuation',
+    loadComponent: () => import('./app/features/valuation-form/valuation-container.component').then(m => m.ValuationContainerComponent),
+  },
+  {
+    path: 'blog',
+    loadComponent: () => import('./app/features/blog/blog-list.component').then(m => m.BlogListComponent),
+  },
+  {
+    path: 'privacy-policy',
+    loadComponent: () => import('./app/features/privacy-policy/privacy-policy').then(m => m.PrivacyPolicyComponent),
+  },
+  {
+    path: '**',
+    redirectTo: '',
+  },
 ];

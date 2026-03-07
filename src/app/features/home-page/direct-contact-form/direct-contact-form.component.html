@@ -1,0 +1,276 @@
+<!-- Direct Contact Form — Left Panel -->
+<div
+  class="relative z-10 w-full h-full flex flex-col justify-center px-6 py-10 sm:px-10 md:px-12 min-h-130"
+  aria-live="polite"
+  aria-atomic="true"
+>
+
+  <!-- ======================================================================
+       STATE: form
+  ======================================================================= -->
+  @if (panelState() === 'form') {
+    <div class="w-full max-w-md mx-auto md:mx-0">
+      <header class="mb-6">
+        <h2 class="text-2xl sm:text-3xl font-bold text-white tracking-tight leading-snug">
+          Avaliação Profissional Gratuita
+        </h2>
+        <p class="mt-2 text-sm sm:text-base text-white/75 leading-relaxed">
+          Preencha os seus dados e um agente especializado entrará em contacto consigo brevemente.
+        </p>
+        <div class="mt-4 h-1 w-16 bg-white/40 rounded-full"></div>
+      </header>
+
+      <form
+        (submit)="$event.preventDefault(); submitForm()"
+        novalidate
+        class="space-y-5"
+      >
+        <!-- Name field -->
+        <div>
+          <label for="dcf-name" class="block text-sm font-medium text-white/90 mb-1">
+            Nome completo <span class="text-red-300" aria-hidden="true">*</span>
+          </label>
+          <input
+            type="text"
+            id="dcf-name"
+            name="dcf-name"
+            autocomplete="name"
+            placeholder="Ex: João Silva"
+            [value]="name()"
+            (input)="name.set($any($event.target).value)"
+            [attr.aria-describedby]="submitted() && errors()['name'] ? 'dcf-name-error' : null"
+            [attr.aria-invalid]="submitted() && errors()['name'] ? 'true' : null"
+            class="block w-full px-4 py-2.5 rounded-lg text-sm text-gray-900 bg-white/95 border placeholder-gray-400
+                   focus:outline-none focus:ring-2 focus:ring-white focus:border-transparent transition"
+            [class.border-red-400]="submitted() && errors()['name']"
+            [class.border-transparent]="!(submitted() && errors()['name'])"
+          >
+          @if (submitted() && errors()['name']) {
+            <p id="dcf-name-error" role="alert" class="mt-1.5 text-xs text-red-300 flex items-center gap-1">
+              <svg class="w-3.5 h-3.5 shrink-0" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
+                <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd"/>
+              </svg>
+              {{ errors()['name'] }}
+            </p>
+          }
+        </div>
+
+        <!-- Email field -->
+        <div>
+          <label for="dcf-email" class="block text-sm font-medium text-white/90 mb-1">
+            Email <span class="text-red-300" aria-hidden="true">*</span>
+          </label>
+          <input
+            type="email"
+            id="dcf-email"
+            name="dcf-email"
+            autocomplete="email"
+            placeholder="Ex: joao@email.com"
+            [value]="email()"
+            (input)="email.set($any($event.target).value)"
+            [attr.aria-describedby]="submitted() && errors()['email'] ? 'dcf-email-error' : null"
+            [attr.aria-invalid]="submitted() && errors()['email'] ? 'true' : null"
+            class="block w-full px-4 py-2.5 rounded-lg text-sm text-gray-900 bg-white/95 border placeholder-gray-400
+                   focus:outline-none focus:ring-2 focus:ring-white focus:border-transparent transition"
+            [class.border-red-400]="submitted() && errors()['email']"
+            [class.border-transparent]="!(submitted() && errors()['email'])"
+          >
+          @if (submitted() && errors()['email']) {
+            <p id="dcf-email-error" role="alert" class="mt-1.5 text-xs text-red-300 flex items-center gap-1">
+              <svg class="w-3.5 h-3.5 shrink-0" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
+                <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd"/>
+              </svg>
+              {{ errors()['email'] }}
+            </p>
+          }
+        </div>
+
+        <!-- Phone field -->
+        <div>
+          <label for="dcf-phone" class="block text-sm font-medium text-white/90 mb-1">
+            Telefone <span class="text-red-300" aria-hidden="true">*</span>
+          </label>
+          <div class="flex rounded-lg overflow-hidden shadow-sm">
+            <span
+              class="inline-flex items-center px-3 bg-white/80 border-r border-gray-300 text-gray-600 text-sm font-medium select-none"
+              aria-hidden="true"
+            >
+              🇵🇹 +351
+            </span>
+            <input
+              type="tel"
+              id="dcf-phone"
+              name="dcf-phone"
+              autocomplete="tel-national"
+              placeholder="912 345 678"
+              [attr.aria-describedby]="submitted() && errors()['phone'] ? 'dcf-phone-error' : null"
+              [attr.aria-invalid]="submitted() && errors()['phone'] ? 'true' : null"
+              (input)="formatPhone($event)"
+              class="flex-1 block px-4 py-2.5 text-sm text-gray-900 bg-white/95 border placeholder-gray-400
+                     focus:outline-none focus:ring-2 focus:ring-white focus:border-transparent transition"
+              [class.border-red-400]="submitted() && errors()['phone']"
+              [class.border-transparent]="!(submitted() && errors()['phone'])"
+            >
+          </div>
+          @if (submitted() && errors()['phone']) {
+            <p id="dcf-phone-error" role="alert" class="mt-1.5 text-xs text-red-300 flex items-center gap-1">
+              <svg class="w-3.5 h-3.5 shrink-0" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
+                <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd"/>
+              </svg>
+              {{ errors()['phone'] }}
+            </p>
+          }
+        </div>
+
+        <!-- Allow contact checkbox -->
+        <div>
+          <label class="flex items-start gap-3 cursor-pointer group">
+            <input
+              type="checkbox"
+              id="dcf-allow-contact"
+              name="dcf-allow-contact"
+              [checked]="allowContact()"
+              (change)="allowContact.set($any($event.target).checked)"
+              [attr.aria-describedby]="submitted() && errors()['allowContact'] ? 'dcf-allowcontact-error' : null"
+              [attr.aria-invalid]="submitted() && errors()['allowContact'] ? 'true' : null"
+              class="mt-0.5 h-4 w-4 shrink-0 rounded border-gray-300 text-primary
+                     focus:ring-2 focus:ring-white focus:ring-offset-0 cursor-pointer"
+            >
+            <span class="text-xs sm:text-sm text-white/80 leading-snug group-hover:text-white/95 transition">
+              Autorizo o contacto para fins de avaliação imobiliária, de acordo com a
+              <a href="/privacidade" target="_blank" rel="noopener noreferrer"
+                 class="underline text-white/90 hover:text-white font-medium">
+                Política de Privacidade
+              </a>.
+            </span>
+          </label>
+          @if (submitted() && errors()['allowContact']) {
+            <p id="dcf-allowcontact-error" role="alert" class="mt-1.5 text-xs text-red-300 flex items-center gap-1">
+              <svg class="w-3.5 h-3.5 shrink-0" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
+                <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd"/>
+              </svg>
+              {{ errors()['allowContact'] }}
+            </p>
+          }
+        </div>
+
+        <!-- Submit button -->
+        <div class="pt-1">
+          <button
+            type="submit"
+            [disabled]="panelState() === 'submitting'"
+            class="w-full flex items-center justify-center gap-2 px-6 py-3 rounded-lg text-sm font-semibold
+                   bg-white text-primary shadow-md hover:bg-white/90 active:bg-white/80
+                   disabled:opacity-50 disabled:cursor-not-allowed
+                   focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-primary
+                   transition-all duration-200"
+            aria-label="Solicitar avaliação profissional gratuita"
+          >
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+            </svg>
+            Solicitar Avaliação
+          </button>
+        </div>
+
+        <!-- Privacy note -->
+        <p class="text-xs text-white/50 text-center leading-snug">
+          Os seus dados são tratados de forma confidencial e não serão partilhados com terceiros.
+        </p>
+      </form>
+    </div>
+  }
+
+  <!-- ======================================================================
+       STATE: submitting
+  ======================================================================= -->
+  @if (panelState() === 'submitting') {
+    <div
+      class="w-full max-w-md mx-auto md:mx-0 flex flex-col items-center justify-center gap-4 py-16"
+      role="status"
+      aria-label="A enviar o seu pedido"
+    >
+      <div
+        class="animate-spin rounded-full h-14 w-14 border-4 border-white/20 border-t-white"
+        aria-hidden="true"
+      ></div>
+      <p class="text-white/90 text-base font-medium">A enviar...</p>
+    </div>
+  }
+
+  <!-- ======================================================================
+       STATE: success
+  ======================================================================= -->
+  @if (panelState() === 'success') {
+    <div
+      class="w-full max-w-md mx-auto md:mx-0 flex flex-col items-center text-center gap-4 py-12"
+      role="status"
+      aria-live="polite"
+    >
+      <!-- Checkmark icon -->
+      <div class="flex items-center justify-center w-16 h-16 rounded-full bg-green-400/20 ring-2 ring-green-400/40">
+        <svg class="w-8 h-8 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/>
+        </svg>
+      </div>
+
+      <div>
+        <h2 class="text-xl sm:text-2xl font-bold text-white mt-2">Pedido enviado com sucesso!</h2>
+        <p class="mt-2 text-sm sm:text-base text-white/75">Entraremos em contacto em breve com informações sobre a sua avaliação profissional.</p>
+      </div>
+
+      <button
+        type="button"
+        (click)="resetForm()"
+        class="mt-4 px-6 py-2.5 rounded-lg text-sm font-semibold border-2 border-white/60 text-white
+               hover:bg-white/10 active:bg-white/20
+               focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-primary
+               transition-all duration-200"
+        aria-label="Enviar outro pedido de avaliação"
+      >
+        Enviar outro pedido
+      </button>
+    </div>
+  }
+
+  <!-- ======================================================================
+       STATE: error
+  ======================================================================= -->
+  @if (panelState() === 'error') {
+    <div
+      class="w-full max-w-md mx-auto md:mx-0 flex flex-col items-center text-center gap-4 py-12"
+      role="alert"
+      aria-live="assertive"
+    >
+      <!-- Error icon -->
+      <div class="flex items-center justify-center w-16 h-16 rounded-full bg-red-400/20 ring-2 ring-red-400/40">
+        <svg class="w-8 h-8 text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+        </svg>
+      </div>
+
+      <div>
+        <h2 class="text-xl sm:text-2xl font-bold text-white mt-2">Ocorreu um erro</h2>
+        @if (errorMessage()) {
+          <p class="mt-2 text-sm sm:text-base text-red-300">{{ errorMessage() }}</p>
+        } @else {
+          <p class="mt-2 text-sm sm:text-base text-white/75">Não foi possível enviar o pedido. Por favor, tente novamente.</p>
+        }
+      </div>
+
+      <button
+        type="button"
+        (click)="resetForm()"
+        class="mt-4 px-6 py-2.5 rounded-lg text-sm font-semibold border-2 border-red-400/60 text-red-300
+               hover:bg-red-400/10 active:bg-red-400/20
+               focus:outline-none focus:ring-2 focus:ring-red-400 focus:ring-offset-2 focus:ring-offset-primary
+               transition-all duration-200"
+        aria-label="Tentar enviar o pedido novamente"
+      >
+        Tentar novamente
+      </button>
+    </div>
+  }
+
+</div>
+

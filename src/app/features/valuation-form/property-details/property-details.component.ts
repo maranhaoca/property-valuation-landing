@@ -1,12 +1,13 @@
 import {ChangeDetectionStrategy, Component, effect, input, output, signal} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {PropertyValuation} from "../../../shared/models/property-valuation.model";
+import {FormNavigationComponent} from "../../../shared/components/form-navigation/form-navigation.component";
 
 @Component({
     selector: 'app-property-details',
     templateUrl: './property-details.component.html',
     changeDetection: ChangeDetectionStrategy.OnPush,
-    imports: [CommonModule]
+    imports: [CommonModule, FormNavigationComponent]
 })
 export class PropertyDetailsComponent {
     initialData = input<Partial<PropertyValuation>>();

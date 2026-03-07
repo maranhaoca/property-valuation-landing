@@ -1,7 +1,7 @@
-<div class="bg-white p-8 rounded-lg shadow-md animate-fade-in">
+<div class="bg-white p-8 rounded-2xl shadow-xl border border-gray-50 animate-fade-in w-full">
     <header class="mb-10">
         <h2 class="text-3xl font-light text-gray-800 tracking-tight mb-2">Dados de Contato</h2>
-        <div class="h-1 w-20 bg-era-red rounded-full"></div>
+        <div class="h-1 w-20 bg-primary rounded-full"></div>
     </header>
 
     <form (submit)="$event.preventDefault(); onNext()">
@@ -11,7 +11,7 @@
                 <div>
                     <label for="name" class="block text-sm font-medium text-gray-700">Nome</label>
                     <input type="text" id="name"
-                           class="mt-1 block w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-era-red focus:border-era-red sm:text-sm"
+                           class="mt-1 block w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary sm:text-sm"
                            [class.border-red-500]="submitted() && errors()['name']"
                            [class.border-gray-300]="!submitted() || !errors()['name']"
                            [value]="name()" (input)="name.set($any($event.target).value)">
@@ -22,7 +22,7 @@
                 <div>
                     <label for="email" class="block text-sm font-medium text-gray-700">E-mail</label>
                     <input type="email" id="email"
-                           class="mt-1 block w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-era-red focus:border-era-red sm:text-sm"
+                           class="mt-1 block w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary sm:text-sm"
                            [class.border-red-500]="submitted() && errors()['email']"
                            [class.border-gray-300]="!submitted() || !errors()['email']"
                            [value]="email()" (input)="email.set($any($event.target).value)">
@@ -39,7 +39,7 @@
             🇵🇹 +351
           </span>
                     <input type="tel" id="phone"
-                           class="flex-1 block w-full rounded-none rounded-r-md px-3 py-2 border focus:outline-none focus:ring-era-red focus:border-era-red sm:text-sm"
+                           class="flex-1 block w-full rounded-none rounded-r-md px-3 py-2 border focus:outline-none focus:ring-primary focus:border-primary sm:text-sm"
                            placeholder="000 000 000"
                            [class.border-red-500]="submitted() && errors()['phone']"
                            [class.border-gray-300]="!submitted() || !errors()['phone']"
@@ -59,14 +59,14 @@
             <div>
                 <label class="flex items-start cursor-pointer">
                     <input type="checkbox"
-                           class="h-4 w-4 mt-0.5 rounded border-gray-300 text-era-red focus:ring-era-red"
+                           class="h-4 w-4 mt-0.5 rounded border-gray-300 text-primary focus:ring-primary"
                            [checked]="privacyPolicy()"
                            (change)="privacyPolicy.set($any($event.target).checked)">
                     <div class="ml-3 text-sm">
                         <label for="privacy" class="text-gray-600 leading-snug cursor-pointer">
                             Autorizo a XPTO a guardar os meus dados para me informar sobre oportunidades de carreira,
                             campanhas de marketing e propostas de financiamento, de acordo com a
-                            <a routerLink="/privacidade" target="_blank" class="text-era-red font-bold underline">Política
+                            <a routerLink="/privacidade" target="_blank" class="text-primary font-bold underline">Política
                                 de Privacidade</a>.
                         </label>
                     </div>
@@ -78,15 +78,8 @@
 
         </div>
 
-        <div class="pt-10 flex justify-between items-center border-t border-gray-50">
-            <button type="button" (click)="previousStep.emit()"
-                    class="text-black font-bold py-4 px-8 rounded-xl border border-b-era-gray-dark hover:bg-red-50 transition-colors duration-300">
-                Anterior
-            </button>
-            <button type="submit"
-                    class="bg-era-red text-white font-bold py-4 px-12 rounded-xl block border-none opacity-100">
-                Seguinte
-            </button>
-        </div>
+        <app-form-navigation
+            (previousClick)="previousStep.emit()">
+        </app-form-navigation>
     </form>
 </div>

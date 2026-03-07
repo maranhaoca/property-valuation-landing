@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { firstValueFrom } from 'rxjs';
 import { PropertyValuation } from '../../shared/models/property-valuation.model';
+import { ProfessionalValuationRequest } from '../../shared/models/professional-valuation-request.interface';
 import {environment} from "../../../environments/environment";
 
 @Injectable({ providedIn: 'root' })
@@ -110,6 +111,31 @@ export class EstimationService {
       return await firstValueFrom(this.http.post(url, body));
     } catch (error) {
       console.error('Error submitting valuation from estimate:', error);
+      throw error;
+    }
+  }
+
+  /**
+   * Submete pedido de avaliação profissional presencial (sem dados de imóvel).
+   * POST /api/v1/valuation/direct-contact
+   */
+  async submitProfessionalValuationRequest(contact: ProfessionalValuationRequest): Promise<void> {
+    const url = `${this.baseUrl}/v1/valuation/direct-contact`;
+
+    const body = {
+      contact: {
+        name: contact.name,
+        email: contact.email,
+        phone: contact.phone,
+        allowContact: contact.allowContact
+      },
+      property: null
+    };
+
+    try {
+      await firstValueFrom(this.http.post(url, body));
+    } catch (error) {
+      console.error('Error submitting professional valuation request:', error);
       throw error;
     }
   }

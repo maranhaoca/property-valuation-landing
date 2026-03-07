@@ -1,7 +1,7 @@
-<div class="bg-white p-8 md:p-12 rounded-2xl shadow-xl border border-gray-50 animate-fade-in max-w-3xl mx-auto">
+<div class="bg-white p-8 md:p-12 rounded-2xl shadow-xl border border-gray-50 animate-fade-in w-full">
     <header class="mb-10">
         <h2 class="text-3xl font-light text-gray-800 tracking-tight mb-2">Sobre o seu imóvel</h2>
-        <div class="h-1 w-20 bg-era-red rounded-full"></div>
+        <div class="h-1 w-20 bg-primary rounded-full"></div>
     </header>
 
     <form (submit)="$event.preventDefault(); onNext()" class="space-y-8">
@@ -10,15 +10,15 @@
             <label class="block text-sm font-semibold text-gray-500 uppercase tracking-wider mb-4">Finalidade</label>
             <div class="flex flex-wrap gap-4">
                 <label class="flex items-center px-6 py-3 border-2 rounded-xl cursor-pointer transition-none group"
-                       [class.border-era-red]="purpose() === 'SELL'"
+                       [class.border-primary]="purpose() === 'SELL'"
                        [class.border-gray-100]="purpose() !== 'SELL'">
                     <input type="radio" name="purpose" class="hidden" value="SELL" [checked]="purpose() === 'SELL'"
                            (change)="purpose.set('SELL')"/>
                     <span class="w-5 h-5 border-2 rounded-full flex items-center justify-center mr-3 transition-none"
-                          [class.border-era-red]="purpose() === 'SELL'"
+                          [class.border-primary]="purpose() === 'SELL'"
                           [class.border-gray-300]="purpose() !== 'SELL'">
                         @if (purpose() === 'SELL') {
-                            <span class="w-2.5 h-2.5 bg-era-red rounded-full"></span>
+                            <span class="w-2.5 h-2.5 bg-primary rounded-full"></span>
                         }
                     </span>
                     <span class="font-medium text-gray-700">Vender</span>
@@ -32,7 +32,7 @@
                        class="block text-sm font-semibold text-gray-500 uppercase tracking-wider mb-2">Tipo de
                     Imóvel</label>
                 <select id="propertyType"
-                        class="block w-full px-4 py-3 bg-gray-50 border border-gray-100 rounded-xl focus:ring-2 focus:ring-era-red focus:border-era-red appearance-none"
+                        class="block w-full px-4 py-3 bg-gray-50 border border-gray-100 rounded-xl focus:ring-2 focus:ring-primary focus:border-primary appearance-none"
                         [class.border-red-500]="submitted() && errors()['propertyType']"
                         (change)="propertyType.set($any($event.target).value)">
                     <option value="Apartamento" [selected]="propertyType() === 'Apartamento'">Apartamento</option>
@@ -55,7 +55,7 @@
                     </div>
                     <input type="text"
                            id="location"
-                           class="block w-full pl-12 pr-4 py-3 bg-gray-50 border border-gray-100 rounded-xl focus:ring-2 focus:ring-era-red focus:border-era-red"
+                           class="block w-full pl-12 pr-4 py-3 bg-gray-50 border border-gray-100 rounded-xl focus:ring-2 focus:ring-primary focus:border-primary"
                            [class.border-red-500]="submitted() && (errors()['location'] || location().length < 7)"
                            placeholder="0000-000"
                            [value]="getFormattedZip(location())"
@@ -67,11 +67,8 @@
             </div>
         </div>
 
-        <div class="pt-10 flex justify-end">
-            <button type="submit"
-                    class="bg-era-red text-white font-bold py-4 px-12 rounded-xl block border-none outline-none appearance-none opacity-100">
-                Seguinte
-            </button>
-        </div>
+        <app-form-navigation [showPrevious]="false">
+        </app-form-navigation>
     </form>
 </div>
+

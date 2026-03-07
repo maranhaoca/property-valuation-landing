@@ -15,6 +15,13 @@
             "outputPath": "./dist",
             "index": "src/index.html",
             "browser": "src/index.tsx",
+            "assets": [
+              {
+                "glob": "**/*",
+                "input": "src/assets",
+                "output": "assets"
+              }
+            ],
             "styles": [
               "src/styles.css"
             ],

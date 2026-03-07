@@ -1,70 +1,48 @@
-<div class="min-h-screen bg-gray-50 py-12 px-4">
-    <div class="max-w-4xl mx-auto">
-
-        <header class="text-center mb-12">
-            <h1 class="text-4xl font-bold text-gray-900 mb-2 tracking-tight">Avalie o seu Imóvel</h1>
-            <p class="text-gray-500 text-lg">Receba uma avaliação gratuita do seu imóvel.</p>
-        </header>
-
-        <app-stepper
-            [currentStep]="currentStep()"
-            [estimationFlowEnabled]="estimationFlowEnabled()"></app-stepper>
-
-        <main class="mt-12">
-            @switch (currentStep()) {
-                @case (1) {
-                    <!-- Step 1: Informações da Propriedade -->
-                    <app-property-info
-                            [initialData]="valuationData()"
-                            (nextStep)="handleNextStep($event)"></app-property-info>
-                }
-                @case (2) {
-                    <!-- Step 2: Detalhes da Propriedade -->
-                    <app-property-details
-                            [initialData]="valuationData()"
-                            (nextStep)="handleNextStep($event)"
-                            (previousStep)="handlePreviousStep()"></app-property-details>
-                }
-                @case (3) {
-                    @if (estimationFlowEnabled()) {
-                        <!-- Fluxo com Estimativa: Step 3 = Price Estimation -->
-                        <app-price-estimation
-                                [initialData]="valuationData()"
-                                (nextStep)="handleEstimationResponse($event)"
-                                (requestNewEstimation)="handleRequestNewEstimation()"
-                                (previousStep)="handlePreviousStep()"></app-price-estimation>
-                    } @else {
-                        <!-- Fluxo Direto: Step 3 = Contact Form -->
-                        <app-contact-form
-                                [initialData]="valuationData()"
-                                (nextStep)="handleNextStep($event)"
-                                (previousStep)="handlePreviousStep()"></app-contact-form>
-                    }
-                }
-                @case (4) {
-                    @if (estimationFlowEnabled()) {
-                        <!-- Fluxo com Estimativa: Step 4 = Contact Form -->
-                        <app-contact-form
-                                [initialData]="valuationData()"
-                                (nextStep)="handleNextStep($event)"
-                                (previousStep)="handlePreviousStep()"></app-contact-form>
-                    } @else {
-                        <!-- Fluxo Direto: Step 4 = Confirmation -->
-                        <app-confirmation
-                                [success]="submissionSuccess()"
-                                [error]="submissionError()"
-                                (restart)="restart()"></app-confirmation>
-                    }
-                }
-                @case (5) {
-                    <!-- Fluxo com Estimativa: Step 5 = Confirmation -->
-                    <app-confirmation
-                            [success]="submissionSuccess()"
-                            [error]="submissionError()"
-                            (restart)="restart()"></app-confirmation>
-                }
-            }
-        </main>
-
+<div class="w-full max-w-3xl mx-auto">
+  @if (showStepper()) {
+    <div class="mb-6">
+      <app-stepper [currentStep]="currentStep()"></app-stepper>
     </div>
+  }
+
+  <section aria-label="Formulário de avaliação de imóvel">
+    @switch (currentStep()) {
+        @case (1) {
+            <!-- Step 1: Informações da Propriedade -->
+            <app-property-info
+                    [initialData]="valuationData()"
+                    (nextStep)="handleNextStep($event)"></app-property-info>
+        }
+        @case (2) {
+            <!-- Step 2: Detalhes da Propriedade -->
+            <app-property-details
+                    [initialData]="valuationData()"
+                    (nextStep)="handleNextStep($event)"
+                    (previousStep)="handlePreviousStep()"></app-property-details>
+        }
+        @case (3) {
+            <!-- Step 3: Estimativa de Preço -->
+            <app-price-estimation
+                    [initialData]="valuationData()"
+                    (nextStep)="handleEstimationResponse($event)"
+                    (previousStep)="handlePreviousStep()"></app-price-estimation>
+        }
+        @case (4) {
+            <!-- Step 4: Formulário de Contacto -->
+            <app-contact-form
+                    [initialData]="valuationData()"
+                    (nextStep)="handleNextStep($event)"
+                    (previousStep)="handlePreviousStep()"></app-contact-form>
+        }
+        @case (5) {
+            <!-- Step 5: Confirmação -->
+            <app-confirmation
+                    [success]="submissionSuccess()"
+                    [error]="submissionError()"
+                    [contactData]="submissionSuccess() ? { name: valuationData().name ?? '', email: valuationData().email ?? '', phone: valuationData().phone ?? '', allowContact: !!valuationData().privacyPolicy } : null"
+                    (restart)="restart()"
+                    (requestProfessionalValuation)="handleRequestProfessionalValuation()"></app-confirmation>
+        }
+    }
+  </section>
 </div>

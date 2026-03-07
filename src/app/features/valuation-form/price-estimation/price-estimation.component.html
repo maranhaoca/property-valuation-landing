@@ -1,13 +1,13 @@
-<div class="bg-white p-8 md:p-12 rounded-2xl shadow-xl border border-gray-50 animate-fade-in max-w-3xl mx-auto">
+<div class="bg-white p-8 md:p-12 rounded-2xl shadow-xl border border-gray-50 animate-fade-in w-full">
     <header class="mb-10">
         <h2 class="text-3xl font-light text-gray-800 tracking-tight mb-2">Estimativa de Preço</h2>
-        <div class="h-1 w-20 bg-era-red rounded-full"></div>
+        <div class="h-1 w-20 bg-primary rounded-full"></div>
     </header>
 
     @if (isLoading()) {
         <!-- Loading State -->
         <div class="flex flex-col items-center justify-center py-16">
-            <div class="animate-spin rounded-full h-16 w-16 border-b-4 border-era-red mb-6"></div>
+            <div class="animate-spin rounded-full h-16 w-16 border-b-4 border-primary mb-6"></div>
             <p class="text-gray-600 text-lg">A calcular a estimativa do seu imóvel...</p>
         </div>
     } @else if (error()) {
@@ -35,7 +35,7 @@
         <!-- Success State - Show Estimation -->
         <div class="space-y-8">
             <!-- Price Range Display -->
-            <div class="bg-gradient-to-br from-era-red to-red-600 rounded-2xl p-8 text-white text-center">
+            <div class="bg-gradient-to-br from-primary to-violet-700 rounded-2xl p-8 text-white text-center">
                 <p class="text-sm uppercase tracking-wider mb-3 opacity-90">Estimativa do seu imóvel</p>
                 <div class="text-5xl font-bold mb-2">
                     {{ formatPrice(minPrice()) }} - {{ formatPrice(maxPrice()) }}
@@ -70,7 +70,7 @@
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <button type="button"
                             (click)="onAcceptContact()"
-                            class="bg-era-red text-white font-bold py-5 px-8 rounded-xl border-none hover:bg-red-700 transition-colors duration-300 text-lg">
+                            class="bg-primary text-white font-bold py-5 px-8 rounded-xl border-none hover:bg-violet-700 transition-colors duration-300 text-lg">
                         Sim, quero ser contactado
                     </button>
                     <button type="button"

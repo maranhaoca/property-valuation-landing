@@ -4,12 +4,13 @@ import { CommonModule } from '@angular/common';
 import {RouterLink} from "@angular/router";
 import {PropertyValuation} from "../../../shared/models/property-valuation.model";
 import {PhonePipe} from "../../../shared/pipes/phone-format.pipe";
+import {FormNavigationComponent} from "../../../shared/components/form-navigation/form-navigation.component";
 
 @Component({
   selector: 'app-contact-form',
   templateUrl: './contact-form.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [CommonModule, RouterLink, PhonePipe]
+  imports: [CommonModule, RouterLink, PhonePipe, FormNavigationComponent]
 })
 export class ContactFormComponent {
   initialData = input<Partial<PropertyValuation>>();

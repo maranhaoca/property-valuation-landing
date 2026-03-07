@@ -6,6 +6,5 @@ export interface AppConfig {
       primaryColor?: string;
       secondaryColor?: string;
     };
-    estimationFlowEnabled?: boolean;
   };
 }

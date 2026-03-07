@@ -1,9 +1,8 @@
-import { Injectable, inject, signal, computed } from '@angular/core';
+import { Injectable, inject, signal } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
 import { tap, map, catchError } from 'rxjs/operators';
 import { AppConfig } from '../models/app-config.interface';
-import {environment} from "../../../environments/environment";
 
 @Injectable({
   providedIn: 'root'
@@ -11,27 +10,15 @@ import {environment} from "../../../environments/environment";
 export class AppConfigService {
   private readonly http = inject(HttpClient);
 
-  private baseUrl = environment.apiUrl;
+  private configUrl = '/assets/config.json';
   readonly config = signal<AppConfig | null>(null);
-
-  readonly estimationFlowEnabled = computed(() =>
-    this.config()?.settings.estimationFlowEnabled ?? false
-  );
-
-  readonly primaryColor = computed(() =>
-    this.config()?.settings.branding?.primaryColor ?? '#E30613'
-  );
-
-  readonly secondaryColor = computed(() =>
-    this.config()?.settings.branding?.secondaryColor ?? '#374151'
-  );
 
   /**
    * Carrega configuração inicial da aplicação
    * Chamado no APP_INITIALIZER
    */
   loadConfig(): Observable<void> {
-    return this.http.get<AppConfig>(`${this.baseUrl}/v1/initialize`).pipe(
+    return this.http.get<AppConfig>(`${this.configUrl}`).pipe(
       tap(config => {
         this.config.set(config);
         this.applyBranding(config);
@@ -54,21 +41,11 @@ export class AppConfigService {
     const root = document.documentElement;
 
     if (config.settings.branding.primaryColor) {
-      root.style.setProperty('--color-era-red', config.settings.branding.primaryColor);
+      root.style.setProperty('--color-primary', config.settings.branding.primaryColor);
     }
 
     if (config.settings.branding.secondaryColor) {
       root.style.setProperty('--color-era-gray-dark', config.settings.branding.secondaryColor);
     }
-  }
-
-  /**
-   * Atualiza a configuração manualmente (útil para testes)
-   */
-  updateConfig(config: Partial<AppConfig>): void {
-    this.config.update(current => ({
-      ...current,
-      ...config
-    } as AppConfig));
   }
 }
