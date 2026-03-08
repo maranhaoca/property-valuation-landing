@@ -12,7 +12,7 @@ import { RouterModule } from '@angular/router';
         <ul class="flex space-x-4">
           <li><a routerLink="" class="text-sm text-gray-600 hover:text-primary">Início</a></li>
           <li><a routerLink="blog" class="text-sm text-gray-600 hover:text-primary">Blog</a></li>
-          <li><a routerLink="privacy-policy" class="text-sm text-gray-600 hover:text-primary">Política de Privacidade</a></li>
+          <li><a routerLink="privacidade" class="text-sm text-gray-600 hover:text-primary">Política de Privacidade</a></li>
         </ul>
       </nav>
     </header>

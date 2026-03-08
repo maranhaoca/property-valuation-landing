@@ -14,7 +14,7 @@ export const routes: Routes = [
     loadComponent: () => import('./app/features/blog/blog-list.component').then(m => m.BlogListComponent),
   },
   {
-    path: 'privacy-policy',
+    path: 'privacidade',
     loadComponent: () => import('./app/features/privacy-policy/privacy-policy').then(m => m.PrivacyPolicyComponent),
   },
   {

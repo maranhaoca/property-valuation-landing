@@ -1,6 +1,6 @@
 # Product Backlog — Property Valuation Landing
 
-_Last updated: 2026-03-06_
+_Last updated: 2026-03-08_
 
 ## 🔴 High Priority
 | ID | Feature | Status | Created |
@@ -18,4 +18,5 @@ _Last updated: 2026-03-06_
 ## ✅ Done
 | ID | Feature | Completed |
 |----|---------|-----------|
+| FEAT-002 | Política de Privacidade RGPD (pessoa singular, Google Gemini, PT) | 2026-03-08 |
 

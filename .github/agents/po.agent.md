@@ -135,6 +135,7 @@ _Last updated: YYYY-MM-DD_
 - Do NOT generate implementation code — that is for the `arq`, `ds`, and `test` agents.
 - Do NOT make assumptions about scope — always clarify with the developer.
 - Do NOT skip the discussion phase and jump straight to documentation.
+- **NEVER create or modify any `*.spec.ts` file.** Test files are exclusively owned by `@test`.
 - Always read `docs/backlog.md` before assigning a FEAT number to avoid collisions.
 - Feature files are the source of truth for other agents — be precise and unambiguous about **what** and **why**, not **how**.
 

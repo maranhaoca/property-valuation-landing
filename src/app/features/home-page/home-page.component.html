@@ -85,19 +85,23 @@
             </div>
           </div>
 
-          <!-- Botão ghost: Solicitar Avaliação Profissional -->
-          <button
-            type="button"
-            (click)="toggleMode()"
-            class="inline-flex items-center gap-2 rounded-full bg-white border border-gray-200 text-gray-700 font-semibold px-6 py-3 text-sm shadow-sm hover:bg-gray-100 hover:border-gray-300 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary transition-colors"
-            aria-label="Solicitar avaliação profissional gratuita com um especialista"
-          >
-            <!-- Ícone de pessoa -->
-            <svg class="w-4 h-4 text-primary" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z" />
-            </svg>
-            Solicitar Avaliação Profissional
-          </button>
+          <!-- Botão primário CTA: Solicitar Avaliação Profissional -->
+          <div class="relative inline-flex">
+            <!-- Anel de pulse para chamar atenção -->
+            <span class="absolute inset-0 rounded-full animate-ping bg-primary opacity-20 pointer-events-none" aria-hidden="true"></span>
+            <button
+              type="button"
+              (click)="toggleMode()"
+              class="relative inline-flex items-center gap-2 rounded-full bg-primary text-white font-bold px-7 py-3.5 text-sm shadow-lg shadow-primary/40 ring-2 ring-primary/30 hover:bg-primary/90 hover:shadow-xl hover:shadow-primary/50 hover:scale-105 active:scale-95 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary transition-all duration-200"
+              aria-label="Solicitar avaliação profissional gratuita com um especialista"
+            >
+              <!-- Ícone de pessoa -->
+              <svg class="w-4 h-4 text-white" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z" />
+              </svg>
+              Solicitar Avaliação Profissional
+            </button>
+          </div>
         </div>
       }
 
