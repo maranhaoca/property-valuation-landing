@@ -14,7 +14,7 @@
         <!-- Error State -->
         <div class="bg-red-50 border border-red-200 rounded-xl p-6 mb-8">
             <div class="flex items-start">
-                <svg class="h-6 w-6 text-red-600 mr-3 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <svg class="h-6 w-6 text-red-600 mr-3 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                 </svg>
                 <div>
@@ -35,7 +35,7 @@
         <!-- Success State - Show Estimation -->
         <div class="space-y-8">
             <!-- Price Range Display -->
-            <div class="bg-gradient-to-br from-primary to-violet-700 rounded-2xl p-8 text-white text-center">
+            <div class="bg-linear-to-br from-primary to-violet-700 rounded-2xl p-8 text-white text-center">
                 <p class="text-sm uppercase tracking-wider mb-3 opacity-90">Estimativa do seu imóvel</p>
                 <div class="text-5xl font-bold mb-2">
                     {{ formatPrice(minPrice()) }} - {{ formatPrice(maxPrice()) }}
@@ -48,7 +48,7 @@
             <!-- Info Box -->
             <div class="bg-blue-50 border border-blue-200 rounded-xl p-6">
                 <div class="flex items-start">
-                    <svg class="h-6 w-6 text-blue-600 mr-3 flex-shrink-0 mt-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <svg class="h-6 w-6 text-blue-600 mr-3 shrink-0 mt-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                     </svg>
                     <div>
