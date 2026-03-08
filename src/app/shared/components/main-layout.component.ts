@@ -7,7 +7,7 @@ import { RouterModule } from '@angular/router';
   imports: [RouterModule],
   template: `
     <header class="w-full py-4 px-6 bg-white shadow flex items-center justify-between">
-      <span class="font-bold text-xl text-primary">ImóvelValor</span>
+      <span class="font-bold text-xl text-primary">Paguro</span>
       <nav>
         <ul class="flex space-x-4">
           <li><a routerLink="" class="text-sm text-gray-600 hover:text-primary">Início</a></li>
@@ -21,7 +21,7 @@ import { RouterModule } from '@angular/router';
     </main>
     <footer class="w-full py-6 px-6 bg-primary text-white mt-8">
       <div class="flex justify-between items-center">
-        <span class="text-sm">&copy; 2026 ImóvelValor. Todos os direitos reservados.</span>
+        <span class="text-sm">&copy; 2026 Paguro. Todos os direitos reservados.</span>
       </div>
     </footer>
   `,
